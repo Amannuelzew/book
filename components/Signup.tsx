@@ -8,11 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import { Checkbox } from "@mui/material";
+import { Box } from "@mui/material";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { registerUser } from "@/actions/auth";
-import { Box, Grid } from "@mui/material";
-import Links from "./Links";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 const Signup = () => {
   const [state, action] = useFormState(registerUser, {
     error: null,
@@ -20,19 +20,28 @@ const Signup = () => {
   });
 
   return (
-    <Box sx={{ paddingX: 10, paddingY: 5, width: "70%" }}>
+    <Box sx={{ paddingX: 10, paddingY: 5 }}>
       <Box
-        sx={{ display: "flex", flexDirection: "row", marginBottom: 2, gap: 3 }}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          marginBottom: 2,
+          gap: 3,
+          alignItems: "end",
+        }}
       >
-        <Box>icon</Box>
+        <Box>
+          {" "}
+          <AutoStoriesIcon sx={{ color: "#02AAFF", fontSize: 40 }} />
+        </Box>
         <Typography variant="h5">Book Rent</Typography>
       </Box>
-      <Box>
+      <Box sx={{ my: 2 }}>
         <Typography variant="h6">Signup into Book Rent</Typography>
         <hr />
       </Box>
       <form action={action}>
-        <Box sx={{ p: 1, display: "flex", flexDirection: "column", gap: 1 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <TextField
             error={state.error?.email?.length !== undefined}
             id="email"
@@ -82,7 +91,6 @@ const Signup = () => {
           />
 
           <FormControl
-            required
             error={state.error?.terms?.length != 0}
             sx={{ m: 1 }}
             variant="standard"

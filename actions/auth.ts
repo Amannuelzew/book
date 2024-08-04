@@ -38,33 +38,27 @@ const sigupSchema = z
       .min(1, { message: "This field has to be filled." }),
     location: z.string().min(1, { message: "This field has to be filled." }),
     phoneNumber: z.string().min(1, { message: "This field has to be filled." }),
-    terms: z.boolean({ message: "check " }),
+    terms: z.string({ message: "You must agree to Terms and Conditions." }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "passowrd don't match",
     path: ["confirmPassword"],
-  })
-  .refine((data) => data.terms === true, {
-    message: "check agree",
-    path: ["terms"],
   });
-const siginSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, { message: "This field has to be filled." })
-      .email("This is not a valid email."),
-    password: z.string().min(1, { message: "This field has to be filled." }),
-    remember: z.boolean(),
-  })
-  .refine((data) => data.remember === true, {
-    message: "check remember",
-    path: ["remember"],
-  });
+
+const siginSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .email("This is not a valid email."),
+  password: z.string().min(1, { message: "This field has to be filled." }),
+  remember: z.string().nullable(),
+});
+
 export const registerUser = async (
   prevState: SignupFormState,
   formData: FormData
 ): Promise<SignupFormState> => {
+  console.log(formData, "some");
   const data = sigupSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -73,8 +67,9 @@ export const registerUser = async (
     phoneNumber: formData.get("phoneNumber"),
     terms: formData.get("terms"),
   });
-
+  console.log(data, "okay");
   if (!data.success) return { error: data.error.flatten().fieldErrors };
+  console.log(data.data?.terms, "hertheree");
   try {
     const { token } = await signup(data.data);
     cookies().set(COOKIE_NAME, token);

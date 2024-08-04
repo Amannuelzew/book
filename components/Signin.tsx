@@ -1,68 +1,84 @@
 "use client";
 import Submit from "./Submit";
-import { Input } from "@mui/material";
 import { Checkbox } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Box } from "@mui/material";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { signinUser } from "@/actions/auth";
-
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 const Signin = () => {
   const [state, action] = useFormState(signinUser, {
     error: null,
     message: null,
   });
   return (
-    <div className="item-center p-28">
-      <div className="flex gap-5 mb-6">
-        <div>icon</div>
-        <h1 className="font-semibold text-2xl ">Book Rent</h1>
-      </div>
-      <div className="font-semibold mb-8">
-        <p>Login into Book Rent</p>
-        <hr className=" border-gray-300" />
-      </div>
-      <hr />
-      <form action={action} className="grid gap-0.5">
-        <div>
-          <label htmlFor="email">Email address</label>
-          <Input
+    <Box sx={{ paddingX: 10, paddingY: 15 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          marginBottom: 2,
+          gap: 3,
+          alignItems: "end",
+        }}
+      >
+        <Box>
+          {" "}
+          <AutoStoriesIcon sx={{ color: "#02AAFF", fontSize: 40 }} />
+        </Box>
+        <Typography variant="h5">Book Rent</Typography>
+      </Box>
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h6">Login into Book Rent</Typography>
+        <hr />
+      </Box>
+      <form action={action}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <TextField
+            error={state.error?.email?.length !== undefined}
             id="email"
             type="email"
             name="email"
-            className="border-gray-400"
+            label="Email address"
+            fullWidth
+            helperText={state.error?.email && state.error?.email}
           />
-          {state.error?.email && (
-            <p className="text-sm text-red-500">{state.error?.email}</p>
-          )}
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <Input
+          <TextField
+            error={state.error?.password?.length !== undefined}
             id="password"
             type="password"
             name="password"
-            className="border-gray-400"
+            label="password"
+            size="medium"
+            fullWidth
+            helperText={state.error?.password && state.error?.password}
           />
-          {state.error?.password && (
-            <p className="text-sm text-red-500">{state.error?.password}</p>
-          )}
-        </div>
-        <div className="items-center flex space-x-2 my-4">
-          <Checkbox id="remember" name="remember" />
-          <label htmlFor="remember">Remember me</label>
-        </div>
-        {state.error?.remember && (
-          <p className="text-sm text-red-500">{state.error?.remember}</p>
-        )}
-        <Submit label="LOGIN" />
-        <p className="text-center my-4">
-          Have not an account?{" "}
-          <Link href="/signup" className="text-cyan-600">
-            Sign up
-          </Link>
-        </p>
+          <FormControl
+            required
+            error={state.error?.remember?.length != 0}
+            sx={{ m: 1 }}
+            variant="standard"
+          >
+            <FormControlLabel
+              control={<Checkbox id="remember" name="remember" />}
+              label="Remember me"
+            />
+            <FormHelperText>{state.error?.remember}</FormHelperText>
+          </FormControl>
+          <Submit label="LOGIN" />
+          <Typography align="center" sx={{ m: 2 }}>
+            Have not an account? <Link href="/signup">Sign up</Link>
+          </Typography>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 };
 
