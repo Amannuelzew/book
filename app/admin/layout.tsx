@@ -1,5 +1,5 @@
 import AdminSidebar from "@/components/AdminSidebar";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 const AdminLayout = ({
   children,
@@ -8,8 +8,13 @@ const AdminLayout = ({
 }>) => {
   return (
     <Box>
-      <AdminSidebar />
-      {children}
+      <Grid container>
+        <Grid sm={2.2}>
+          <AdminSidebar />
+        </Grid>
+
+        <Grid sm={9.8}>{children}</Grid>
+      </Grid>
     </Box>
   );
 };
