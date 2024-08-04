@@ -7,13 +7,13 @@ import { Box, Card, Grid, Typography } from "@mui/material";
 const AdminDashbordpage = () => {
   return (
     <Grid container direction={"row"} alignItems={"stretch"} sx={{ p: 1 }}>
-      {/*  <Grid
+      <Grid
         sm={12}
         item
         sx={{ p: 2, borderRadius: "10px", backgroundColor: "white" }}
       >
         <Box display={"inline"} fontWeight="bold">
-          Admin
+          Owner
         </Box>
         <Box display={"inline"}>/Dashboard</Box>
       </Grid>
@@ -125,7 +125,7 @@ const AdminDashbordpage = () => {
             </Card>
           </Grid>
         </Grid>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 };

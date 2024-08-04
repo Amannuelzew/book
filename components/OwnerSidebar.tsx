@@ -14,9 +14,9 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { signout } from "@/actions/signout";
 const links = [
-  { path: "/admin", name: "Dashboard", icon: SpaceDashboardOutlinedIcon },
-  { path: "/admin/books", name: "Books", icon: FilterNoneIcon },
-  { path: "/admin/owners", name: "Owners", icon: PersonOutlineOutlinedIcon },
+  { path: "/owner", name: "Dashboard", icon: SpaceDashboardOutlinedIcon },
+  { path: "/owner/book", name: "Books", icon: FilterNoneIcon },
+  { path: "", name: "Other", icon: AddBoxOutlinedIcon },
   { path: "", name: "Other", icon: AddBoxOutlinedIcon },
   { path: "", name: "Other", icon: AddBoxOutlinedIcon },
   { path: "", name: "Notification", icon: NotificationsNoneOutlinedIcon },

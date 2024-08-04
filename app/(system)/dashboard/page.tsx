@@ -4,7 +4,7 @@ import Graph from "@/components/Graph";
 import { formatDate } from "@/utils/formatters";
 import { Box, Card, Grid, Typography } from "@mui/material";
 
-const AdminDashbordpage = () => {
+const Dashbordpage = () => {
   return (
     <Grid container direction={"row"} alignItems={"stretch"} sx={{ p: 1 }}>
       {/*  <Grid
@@ -130,4 +130,4 @@ const AdminDashbordpage = () => {
   );
 };
 
-export default AdminDashbordpage;
+export default Dashbordpage;

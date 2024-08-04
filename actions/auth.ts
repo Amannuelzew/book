@@ -77,7 +77,7 @@ export const registerUser = async (
     return { message: "Database Error:Failed to Sign you up." };
   }
   //casl
-  redirect("/admin");
+  redirect("/dashboard");
 };
 export const signinUser = async (
   prevState: SigninFormState,
@@ -98,5 +98,5 @@ export const signinUser = async (
     return { message: "Database Error:Failed to Sign you in." };
   }
   //check casl
-  redirect("/admin");
+  redirect("/dashboard");
 };

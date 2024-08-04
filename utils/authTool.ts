@@ -5,7 +5,10 @@ import db from "@/utils/db";
 const createToken = (userId: string) => {
   return jwt.sign({ id: userId }, process.env.SECRET!);
 };
-const getUserFromToken = async (token: { name: string; value: string }) => {
+export const getUserFromToken = async (token: {
+  name: string;
+  value: string;
+}) => {
   const payload = jwt.verify(token.value, process.env.SECRET!) as {
     id: string;
   };
