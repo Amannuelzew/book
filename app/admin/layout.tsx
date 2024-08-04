@@ -7,13 +7,14 @@ const AdminLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "#BBE0FF" }}>
       <Grid container>
-        <Grid sm={2.2}>
+        <Grid item sm={2}>
           <AdminSidebar />
         </Grid>
-
-        <Grid sm={9.8}>{children}</Grid>
+        <Grid item sm={10}>
+          {children}
+        </Grid>
       </Grid>
     </Box>
   );

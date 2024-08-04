@@ -3,7 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import SpaceDashboardOutlinedIcon from "@mui/icons-material/SpaceDashboardOutlined";
-import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
+import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
@@ -15,7 +15,7 @@ import Link from "next/link";
 import { signout } from "@/actions/signout";
 const links = [
   { path: "/admin", name: "Dashboard", icon: SpaceDashboardOutlinedIcon },
-  { path: "/admin/books", name: "Books", icon: LibraryBooksOutlinedIcon },
+  { path: "/admin/books", name: "Books", icon: FilterNoneIcon },
   { path: "/admin/owners", name: "Owners", icon: PersonOutlineOutlinedIcon },
   { path: "", name: "Other", icon: AddBoxOutlinedIcon },
   { path: "", name: "Other", icon: AddBoxOutlinedIcon },
@@ -27,11 +27,14 @@ const AdminSidebar = () => {
   const path = usePathname();
   return (
     <Box
+      position={"relative"}
       sx={{
         backgroundColor: "#171B36",
         p: 2,
+        my: 1,
         color: "white",
         borderRadius: "10px",
+        height: "97%",
       }}
     >
       <Box
@@ -47,15 +50,13 @@ const AdminSidebar = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
             alignItems: "end",
-            textAlign: "end",
-            gap: 3,
+            gap: 1,
             color: "skyblue",
           }}
         >
-          <AutoStoriesIcon sx={{ fontSize: 30 }} />
-          <Typography variant="h6">Book Rent</Typography>
+          <AutoStoriesIcon sx={{ fontSize: 25 }} />
+          <Typography fontSize={20}>Book Rent</Typography>
         </Box>
       </Box>
       {links
@@ -129,15 +130,17 @@ const AdminSidebar = () => {
           })
           .slice(5)}
       </Box>
-      <Button
-        variant="contained"
-        fullWidth
-        startIcon={<LogoutIcon />}
-        sx={{ backgroundColor: "gray" }}
-        onClick={() => signout()}
-      >
-        Logout
-      </Button>
+      <Box position={"absolute"} bottom={10} width={"80%"}>
+        <Button
+          variant="contained"
+          fullWidth
+          startIcon={<LogoutIcon />}
+          sx={{ backgroundColor: "gray" }}
+          onClick={() => signout()}
+        >
+          Logout
+        </Button>
+      </Box>
     </Box>
   );
 };
