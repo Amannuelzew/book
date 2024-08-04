@@ -58,7 +58,6 @@ export const registerUser = async (
   prevState: SignupFormState,
   formData: FormData
 ): Promise<SignupFormState> => {
-  console.log(formData, "some");
   const data = sigupSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -67,7 +66,7 @@ export const registerUser = async (
     phoneNumber: formData.get("phoneNumber"),
     terms: formData.get("terms"),
   });
-  console.log(data, "okay");
+
   if (!data.success) return { error: data.error.flatten().fieldErrors };
   console.log(data.data?.terms, "hertheree");
   try {
@@ -77,7 +76,8 @@ export const registerUser = async (
     console.error(e);
     return { message: "Database Error:Failed to Sign you up." };
   }
-  redirect("/dashboard");
+  //casl
+  redirect("/admin");
 };
 export const signinUser = async (
   prevState: SigninFormState,
@@ -97,5 +97,6 @@ export const signinUser = async (
     console.error(e);
     return { message: "Database Error:Failed to Sign you in." };
   }
-  redirect("/dashboard");
+  //check casl
+  redirect("/admin");
 };
