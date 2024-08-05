@@ -21,8 +21,13 @@ const links = [
   { path: "", name: "Other", icon: AddBoxOutlinedIcon },
   { path: "", name: "Notification", icon: NotificationsNoneOutlinedIcon },
   { path: "", name: "Setting", icon: SettingsOutlinedIcon },
-  { path: "", name: "Login as Book Owner", icon: AccountCircleOutlinedIcon },
+  { path: "", name: "Login as Owner", icon: AccountCircleOutlinedIcon },
 ];
+const style = {
+  color: "white",
+  textDecoration: "none",
+  ":hover": {},
+};
 /*
 delete me
  class books {
@@ -54,14 +59,14 @@ const Sidebar = ({ user }: { user: User }) => {
           flexDirection: "row",
           marginBottom: 7,
           gap: 3,
-          alignItems: "end",
+          alignItems: "center",
         }}
       >
         <MenuOutlinedIcon />
         <Box
           sx={{
             display: "flex",
-            alignItems: "end",
+            alignItems: "center",
             gap: 1,
             color: "skyblue",
           }}
@@ -82,9 +87,9 @@ const Sidebar = ({ user }: { user: User }) => {
                 sx={{
                   display: "flex",
                   flexDirection: "row",
-                  marginBottom: 1,
+                  marginBottom: 2,
                   gap: 2,
-                  alignItems: "end",
+                  alignItems: "center",
                   backgroundColor: link.path == path && "#02AAFF",
                   p: link.path == path && 1,
                   borderRadius: link.path == path && "10px",
@@ -94,7 +99,7 @@ const Sidebar = ({ user }: { user: User }) => {
                   },
                 }}
               >
-                <link.icon sx={{ fontSize: 20, }} />
+                <link.icon sx={{ fontSize: 30, }} />
 
                 <Typography>{link.name}</Typography>
               </Box>
@@ -105,184 +110,142 @@ const Sidebar = ({ user }: { user: User }) => {
  */}
       {/* Dashboard */}
       <Can I="read" a="/dashboard" ability={ability}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            marginBottom: 1,
-            gap: 2,
-            alignItems: "end",
-            backgroundColor: "/dashboard" == path ? "#02AAFF" : "",
-            p: "/dashboard" == path ? 1 : 0,
-            borderRadius: "/dashboard" == path ? "10px" : "0px",
-            "&:hover": {
-              color: "/dashboard" == path ? "" : "#02AAFF",
-              cursor: "pointer",
-            },
+        <Link
+          href={"/dashboard"}
+          style={{
+            color: "white",
+            textDecoration: "none",
           }}
         >
-          <SpaceDashboardOutlinedIcon sx={{ fontSize: 20 }} />
-          <Link
-            href={"/dashboard"}
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            <Typography
-              sx={{
-                "&:hover": {
-                  color: "/dashboard" == path ? "" : "#02AAFF",
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: 2,
+              gap: 2,
+              alignItems: "center",
+              backgroundColor: "/dashboard" == path ? "#02AAFF" : "",
+              p: "/dashboard" == path ? 1 : 0,
+              borderRadius: "/dashboard" == path ? "10px" : "0px",
+              "&:hover": {
+                color: "/dashboard" == path ? "" : "#02AAFF",
+                cursor: "pointer",
+                "& a": {
+                  color: "#02AAFF",
                   cursor: "pointer",
                 },
-              }}
-            >
-              Dashboard
-            </Typography>
-          </Link>
-        </Box>
+              },
+            }}
+          >
+            <SpaceDashboardOutlinedIcon sx={{ fontSize: 30 }} />
+            Dashboard
+          </Box>
+        </Link>
       </Can>
       {/* Books admin */}
       <Can I="read" a="/books" ability={ability}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            marginBottom: 1,
-            gap: 2,
-            alignItems: "end",
-            backgroundColor: "/books" == path ? "#02AAFF" : "",
-            p: "/books" == path ? 1 : 0,
-            borderRadius: "/books" == path ? "10px" : "0px",
-            "&:hover": {
-              color: "/books" == path ? "" : "#02AAFF",
-              cursor: "pointer",
-            },
-          }}
+        <Link
+          href={"/books"}
+          style={{ color: "white", textDecoration: "none" }}
         >
-          <FilterNoneIcon sx={{ fontSize: 20 }} />
-          <Link
-            href={"/books"}
-            style={{ color: "white", textDecoration: "none" }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: 2,
+              gap: 2,
+              alignItems: "center",
+              backgroundColor: "/books" == path ? "#02AAFF" : "",
+              p: "/books" == path ? 1 : 0,
+              borderRadius: "/books" == path ? "10px" : "0px",
+              "&:hover": {
+                color: "/books" == path ? "" : "#02AAFF",
+                cursor: "pointer",
+              },
+            }}
           >
-            <Typography
-              sx={{
-                "&:hover": {
-                  color: "/books" == path ? "" : "#02AAFF",
-                  cursor: "pointer",
-                },
-              }}
-            >
-              Books
-            </Typography>
-          </Link>
-        </Box>
+            <FilterNoneIcon sx={{ fontSize: 30 }} />
+            Books
+          </Box>
+        </Link>
       </Can>
       {/* Book owner */}
       <Can I="read" a="/book" ability={ability}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            marginBottom: 1,
-            gap: 2,
-            alignItems: "end",
-            backgroundColor: "/book" == path ? "#02AAFF" : "",
-            p: "/book" == path ? 1 : 0,
-            borderRadius: "/book" == path ? "10px" : "0px",
-            "&:hover": {
-              color: "/book" == path ? "" : "#02AAFF",
-              cursor: "pointer",
-            },
-          }}
-        >
-          <FilterNoneIcon sx={{ fontSize: 20 }} />
-          <Link
-            href={"/book"}
-            style={{ color: "white", textDecoration: "none" }}
+        <Link href={"/book"} style={{ color: "white", textDecoration: "none" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: 2,
+              gap: 2,
+              alignItems: "center",
+              backgroundColor: "/book" == path ? "#02AAFF" : "",
+              p: "/book" == path ? 1 : 0,
+              borderRadius: "/book" == path ? "10px" : "0px",
+              "&:hover": {
+                color: "/book" == path ? "" : "#02AAFF",
+                cursor: "pointer",
+              },
+            }}
           >
-            <Typography
-              sx={{
-                "&:hover": {
-                  color: "/book" == path ? "" : "#02AAFF",
-                  cursor: "pointer",
-                },
-              }}
-            >
-              Book Upload
-            </Typography>
-          </Link>
-        </Box>
+            <FilterNoneIcon sx={{ fontSize: 30 }} />
+            Book Upload
+          </Box>
+        </Link>
       </Can>
       {/* Books user */}
       <Can I="read" a="/user/books" ability={ability}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            marginBottom: 1,
-            gap: 2,
-            alignItems: "end",
-            backgroundColor: "/user/books" == path ? "#02AAFF" : "",
-            p: "/user/books" == path ? 1 : 0,
-            borderRadius: "/user/books" == path ? "10px" : "0px",
-            "&:hover": {
-              color: "/user/books" == path ? "" : "#02AAFF",
-              cursor: "pointer",
-            },
-          }}
+        <Link
+          href={"/user/books"}
+          style={{ color: "white", textDecoration: "none" }}
         >
-          <FilterNoneIcon sx={{ fontSize: 20 }} />
-          <Link
-            href={"/user/books"}
-            style={{ color: "white", textDecoration: "none" }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: 2,
+              gap: 2,
+              alignItems: "center",
+              backgroundColor: "/user/books" == path ? "#02AAFF" : "",
+              p: "/user/books" == path ? 1 : 0,
+              borderRadius: "/user/books" == path ? "10px" : "0px",
+              "&:hover": {
+                color: "/user/books" == path ? "" : "#02AAFF",
+                cursor: "pointer",
+              },
+            }}
           >
-            <Typography
-              sx={{
-                "&:hover": {
-                  color: "/user/books" == path ? "" : "#02AAFF",
-                  cursor: "pointer",
-                },
-              }}
-            >
-              Books
-            </Typography>
-          </Link>
-        </Box>
+            <FilterNoneIcon sx={{ fontSize: 30 }} />
+            Books
+          </Box>
+        </Link>
       </Can>
       {/* owners admin */}
       <Can I="read" a="/owners" ability={ability}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            marginBottom: 1,
-            gap: 2,
-            alignItems: "end",
-            backgroundColor: "/owners" == path ? "#02AAFF" : "",
-            p: "/owners" == path ? 1 : 0,
-            borderRadius: "/owners" == path ? "10px" : "0px",
-            "&:hover": {
-              color: "/owners" == path ? "" : "#02AAFF",
-              cursor: "pointer",
-            },
-          }}
+        <Link
+          href={"/owners"}
+          style={{ color: "white", textDecoration: "none" }}
         >
-          <PersonOutlineOutlinedIcon sx={{ fontSize: 20 }} />
-
-          <Link
-            href={"/owners"}
-            style={{ color: "white", textDecoration: "none" }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: 2,
+              gap: 2,
+              alignItems: "center",
+              backgroundColor: "/owners" == path ? "#02AAFF" : "",
+              p: "/owners" == path ? 1 : 0,
+              borderRadius: "/owners" == path ? "10px" : "0px",
+              "&:hover": {
+                color: "/owners" == path ? "" : "#02AAFF",
+                cursor: "pointer",
+              },
+            }}
           >
-            <Typography
-              sx={{
-                "&:hover": {
-                  color: "/owners" == path ? "" : "#02AAFF",
-                  cursor: "pointer",
-                },
-              }}
-            >
-              Owners
-            </Typography>
-          </Link>
-        </Box>
+            <PersonOutlineOutlinedIcon sx={{ fontSize: 30 }} />
+            Owners
+          </Box>
+        </Link>
       </Can>
       {/* others */}
       <Box>
@@ -298,9 +261,9 @@ const Sidebar = ({ user }: { user: User }) => {
                   sx={{
                     display: "flex",
                     flexDirection: "row",
-                    marginBottom: 1,
+                    marginBottom: 2,
                     gap: 2,
-                    alignItems: "end",
+                    alignItems: "center",
                     backgroundColor: link.path == path ? "#02AAFF" : "",
                     p: link.path == path ? 1 : 0,
                     borderRadius: link.path == path ? "10px" : "0px",
@@ -310,7 +273,7 @@ const Sidebar = ({ user }: { user: User }) => {
                     },
                   }}
                 >
-                  <link.icon sx={{ fontSize: 20 }} />
+                  <link.icon sx={{ fontSize: 30 }} />
 
                   <Typography>{link.name}</Typography>
                 </Box>
@@ -337,9 +300,9 @@ const Sidebar = ({ user }: { user: User }) => {
                   sx={{
                     display: "flex",
                     flexDirection: "row",
-                    marginBottom: 1,
+                    marginBottom: 2,
                     gap: 2,
-                    alignItems: "end",
+                    alignItems: "center",
                     backgroundColor: link.path == path ? "#02AAFF" : "",
                     p: link.path == path ? 1 : 0,
                     borderRadius: link.path == path ? "10px" : "0px",
@@ -349,7 +312,7 @@ const Sidebar = ({ user }: { user: User }) => {
                     },
                   }}
                 >
-                  <link.icon sx={{ fontSize: 20 }} />
+                  <link.icon sx={{ fontSize: 30 }} />
 
                   <Typography>{link.name}</Typography>
                 </Box>
@@ -358,6 +321,7 @@ const Sidebar = ({ user }: { user: User }) => {
           })
           .slice(2)}
       </Box>
+
       <Box position={"absolute"} bottom={10} width={"80%"}>
         <Button
           variant="contained"
