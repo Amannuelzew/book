@@ -3,31 +3,22 @@
 
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
 import { User, Book } from "@prisma/client";
-export function defineAbility() {
-  const { can, build } = new AbilityBuilder(createMongoAbility);
 
-  can("read", "all");
-  can("update", "article");
-
-  return build();
-}
-export function defineAbilityFor(user: User) {
+export function sidebardefineAbilityFor(user: User) {
   const { can, build } = new AbilityBuilder(createMongoAbility);
 
   if (user.role === "ADMIN") {
-    can("manage", "books");
-    can("manage", "owners");
-    can("read", "dashboard");
+    can("read", "/books");
+    can("read", "/owners");
+    can("read", "/dashboard");
   }
 
   if (user.role === "OWNER") {
-    //only book that are owned by this user
-    //if(user.email===)
-    can("manage", "books", { authorId: user.id });
-    can("read", "dashboard");
+    can("read", "/book");
+    can("read", "/dashboard");
   }
   if (user.role === "USER") {
-    can("read", "books");
+    can("read", "/user/books");
   }
 
   return build();
