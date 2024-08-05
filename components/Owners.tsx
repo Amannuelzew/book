@@ -3,12 +3,14 @@ import { routedefineAbilityFor } from "@/utils/ability";
 import { Grid, Typography, Box } from "@mui/material";
 import { User } from "@prisma/client";
 import { redirect } from "next/navigation";
-import Table from "./Table";
 import { ROLES } from "@/utils/constants";
+import OwnersTable from "./OwnersTable";
 type owners = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
+  name: string;
+  location: string;
   approved: boolean;
   disabled: boolean;
   userId: string;
@@ -16,18 +18,6 @@ type owners = {
     user: number;
     books: number;
   };
-  user: {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    email: string;
-    password: string;
-    location: string;
-    phoneNumber: string;
-    image: string;
-    role: string;
-    wallet: number;
-  } | null;
 };
 const Owners = ({ user, owners }: { user: User; owners: owners[] }) => {
   //based on access control defined users of type role[ADMIN] can only visit this page
@@ -61,7 +51,7 @@ const Owners = ({ user, owners }: { user: User; owners: owners[] }) => {
             <Typography fontSize={20} fontWeight={"bold"} sx={{ my: 2 }}>
               List of Owners
             </Typography>
-            <Table data={owners} />
+            <OwnersTable data={owners} />
           </Grid>
         </Grid>
       ) : user.role == ROLES.owner ? (

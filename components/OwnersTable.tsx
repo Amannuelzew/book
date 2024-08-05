@@ -1,19 +1,21 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useTransition } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
 import GreenSwitch from "@/components/GreenSwitch";
-import { Box, Button, FormControlLabel, Typography } from "@mui/material";
-import Switch from "@mui/material/Switch";
+import { Box, Button } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { approveOwner } from "@/utils/admin";
 type owners = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
+  name: string;
+  location: string;
   approved: boolean;
   disabled: boolean;
   userId: string;
@@ -21,30 +23,18 @@ type owners = {
     user: number;
     books: number;
   };
-  user: {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    email: string;
-    password: string;
-    location: string;
-    phoneNumber: string;
-    image: string;
-    role: string;
-    wallet: number;
-  } | null;
 };
-const Table = ({ data }: { data: owners[] }) => {
+const OwnersTable = ({ data }: { data: owners[] }) => {
+  const [pending, startTransition] = useTransition();
+  const handleApprove = (id: string) => {
+    startTransition(() => approveOwner(id));
+  };
   //should be memoized or stable
   const columns = useMemo<MRT_ColumnDef<owners>[]>(
     () => [
       {
-        accessorKey: "user.email",
+        accessorKey: "name",
         header: "owner",
-        //Format a number in a cell render
-        Cell: ({ cell }) => (
-          <span>{cell.getValue<string>().split("@")[0]}</span>
-        ),
         size: 150,
       },
       {
@@ -54,11 +44,10 @@ const Table = ({ data }: { data: owners[] }) => {
         Cell: ({ cell }) => <span>{cell.getValue<string>()} Books</span>,
       },
       {
-        accessorKey: "user.location",
+        accessorKey: "location",
         header: "Location",
         size: 150,
       },
-
       {
         accessorKey: "disabled",
         header: "Status",
@@ -93,19 +82,25 @@ const Table = ({ data }: { data: owners[] }) => {
         enableSorting: false, //disable sorting on this column
         enableColumnFilter: false,
         Header: ({ column }) => <></>,
-        Cell: ({ cell }) => (
+        Cell: ({ cell, row }) => (
           <>
-            {cell ? (
-              <Button variant="contained">Approve</Button>
-            ) : (
+            {row.original.approved ? (
               <Button
                 variant="contained"
+                onClick={() => handleApprove(row.original.id)}
                 sx={{
                   backgroundColor: "gray",
                   "&:hover": { backgroundColor: "gray" },
                 }}
               >
                 Approved
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={() => handleApprove(row.original.id)}
+              >
+                Approve
               </Button>
             )}
           </>
@@ -124,4 +119,4 @@ const Table = ({ data }: { data: owners[] }) => {
   return <MaterialReactTable table={table} />;
 };
 
-export default Table;
+export default OwnersTable;

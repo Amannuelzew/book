@@ -1,5 +1,5 @@
 import Pie from "@/components/Pie";
-import Table from "@/components/Table";
+import Table from "@/components/OwnersTable";
 import Graph from "@/components/Graph";
 import { formatDate } from "@/utils/formatters";
 import { Box, Card, Grid, Typography } from "@mui/material";

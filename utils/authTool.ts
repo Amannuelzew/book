@@ -68,6 +68,8 @@ export const signup = async ({
     await db.owner.create({
       data: {
         userId: user.id,
+        name: email.split("@")[0],
+        location: location,
       },
     });
 

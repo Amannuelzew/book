@@ -1,7 +1,7 @@
 "use client";
 import { User } from "@prisma/client";
 import { Box, Grid, Typography } from "@mui/material";
-import Table from "@/components/Table";
+import Table from "@/components/OwnersTable";
 import { routedefineAbilityFor } from "@/utils/ability";
 import { redirect } from "next/navigation";
 
