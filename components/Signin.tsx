@@ -42,27 +42,27 @@ const Signin = () => {
       <form action={action}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <TextField
-            error={state.error?.email?.length !== undefined}
+            error={state?.error?.email?.length !== undefined}
             id="email"
             type="email"
             name="email"
             label="Email address"
             fullWidth
-            helperText={state.error?.email && state.error?.email}
+            helperText={state?.error?.email && state?.error?.email}
           />
           <TextField
-            error={state.error?.password?.length !== undefined}
+            error={state?.error?.password?.length !== undefined}
             id="password"
             type="password"
             name="password"
             label="password"
             size="medium"
             fullWidth
-            helperText={state.error?.password && state.error?.password}
+            helperText={state?.error?.password && state?.error?.password}
           />
           <FormControl
             required
-            error={state.error?.remember?.length != 0}
+            error={state?.error?.remember?.length != 0}
             sx={{ m: 1 }}
             variant="standard"
           >
@@ -70,7 +70,7 @@ const Signin = () => {
               control={<Checkbox id="remember" name="remember" />}
               label="Remember me"
             />
-            <FormHelperText>{state.error?.remember}</FormHelperText>
+            <FormHelperText>{state?.error?.remember}</FormHelperText>
           </FormControl>
           <Submit label="LOGIN" />
           <Typography align="center" sx={{ m: 2 }}>

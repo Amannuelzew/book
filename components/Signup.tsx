@@ -4,11 +4,14 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  Switch,
   TextField,
   Typography,
 } from "@mui/material";
 import { Checkbox } from "@mui/material";
 import { Box } from "@mui/material";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { registerUser } from "@/actions/auth";
@@ -40,58 +43,59 @@ const Signup = () => {
         <Typography variant="h6">Signup into Book Rent</Typography>
         <hr />
       </Box>
+
       <form action={action}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <TextField
-            error={state.error?.email?.length !== undefined}
+            error={state?.error?.email?.length !== undefined}
             id="email"
             type="email"
             name="email"
             label="Email address"
             fullWidth
-            helperText={state.error?.email && state.error?.email}
+            helperText={state?.error?.email && state?.error?.email}
           />
           <TextField
-            error={state.error?.password?.length !== undefined}
+            error={state?.error?.password?.length !== undefined}
             id="password"
             type="password"
             name="password"
             label="password"
             size="medium"
             fullWidth
-            helperText={state.error?.password && state.error?.password}
+            helperText={state?.error?.password && state?.error?.password}
           />
           <TextField
-            error={state.error?.confirmPassword?.length !== undefined}
+            error={state?.error?.confirmPassword?.length !== undefined}
             id="confirmPassword"
             type="password"
             name="confirmPassword"
             label="confirm Password"
             fullWidth
             helperText={
-              state.error?.confirmPassword && state.error?.confirmPassword
+              state?.error?.confirmPassword && state?.error?.confirmPassword
             }
           />
           <TextField
-            error={state.error?.location?.length !== undefined}
+            error={state?.error?.location?.length !== undefined}
             id="location"
             name="location"
             label="location"
             fullWidth
-            helperText={state.error?.location && state.error?.location}
+            helperText={state?.error?.location && state?.error?.location}
           />
           <TextField
-            error={state.error?.phoneNumber?.length !== undefined}
+            error={state?.error?.phoneNumber?.length !== undefined}
             id="phoneNumber"
             type="tel"
             name="phoneNumber"
             label="phone Number"
             fullWidth
-            helperText={state.error?.phoneNumber && state.error?.phoneNumber}
+            helperText={state?.error?.phoneNumber && state?.error?.phoneNumber}
           />
 
           <FormControl
-            error={state.error?.terms?.length != 0}
+            error={state?.error?.terms?.length != 0}
             sx={{ m: 1 }}
             variant="standard"
           >
@@ -99,7 +103,19 @@ const Signup = () => {
               control={<Checkbox id="terms" name="terms" />}
               label="I accept the Terms and Conditions"
             />
-            <FormHelperText>{state.error?.terms}</FormHelperText>
+            <FormHelperText>{state?.error?.terms}</FormHelperText>
+          </FormControl>
+
+          <FormControl
+            error={state?.error?.role?.length != 0}
+            sx={{ m: 1 }}
+            variant="standard"
+          >
+            <FormControlLabel
+              control={<Switch id="role" name="role" />}
+              label="Are you a book owner?"
+            />
+            <FormHelperText>{state?.error?.role}</FormHelperText>
           </FormControl>
 
           <Submit label="SIGN IN" />

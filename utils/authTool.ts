@@ -43,11 +43,13 @@ export const signup = async ({
   password,
   location,
   phoneNumber,
+  role,
 }: {
   email: string;
   password: string;
   location: string;
   phoneNumber: string;
+  role: string | null;
 }) => {
   const hashpwd = await hashPassword(password);
 
@@ -57,6 +59,7 @@ export const signup = async ({
       password: hashpwd,
       location: location,
       phoneNumber: phoneNumber,
+      role: role ? role : undefined,
     },
   });
   const token = createToken(user.id);

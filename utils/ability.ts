@@ -1,7 +1,8 @@
 "use client";
 /* roles.js */
+
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
-import { User } from "@prisma/client";
+import { User, Book } from "@prisma/client";
 export function defineAbility() {
   const { can, build } = new AbilityBuilder(createMongoAbility);
 
@@ -16,10 +17,14 @@ export function defineAbilityFor(user: User) {
   if (user.role === "ADMIN") {
     can("manage", "books");
     can("manage", "owners");
+    can("read", "dashboard");
   }
+
   if (user.role === "OWNER") {
-    //only book that are owned by his user
-    can("manage", "book");
+    //only book that are owned by this user
+    //if(user.email===)
+    can("manage", "books", { authorId: user.id });
+    can("read", "dashboard");
   }
   if (user.role === "USER") {
     can("read", "books");
@@ -43,3 +48,25 @@ author.can("read", "article"); // true
 const reader = defineAbilityFor({ isAuthorised: false });
 reader.can("read", "article"); // true
  */
+
+import { PureAbility, subject } from "@casl/ability";
+import { createPrismaAbility, PrismaQuery, Subjects } from "@casl/prisma";
+
+type AppAbility = PureAbility<
+  [
+    string,
+    Subjects<{
+      User: User;
+      Book: Book;
+    }>
+  ],
+  PrismaQuery
+>;
+const { can, cannot, build } = new AbilityBuilder<AppAbility>(
+  createPrismaAbility
+);
+
+can("read", "Book", { owner: { every: { id: "1" } } });
+
+const ability = build();
+ability.can("read", "Book");

@@ -1,5 +1,5 @@
 const Book = () => {
-  return "Book upload";
+  return "view Books";
 };
 
 export default Book;

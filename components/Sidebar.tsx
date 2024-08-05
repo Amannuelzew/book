@@ -23,10 +23,19 @@ const links = [
   { path: "", name: "Setting", icon: SettingsOutlinedIcon },
   { path: "", name: "Login as Book Owner", icon: AccountCircleOutlinedIcon },
 ];
+/*
+delete me
+ class books {
+  constructor(title: string, authorId: string) {
+    this.title = title;
+    this.authorId = authorId;
+  }
+}
+const aa = new books("one", "1ae225f0-0fad-4a40-a761-980d596bb17"); */
 const Sidebar = ({ user }: { user: User }) => {
   const path = usePathname();
   const ability = defineAbilityFor(user);
-  console.log(ability.can("manage", "owners"), "ssss");
+  console.log(ability.can("manage", "books"), "rr", user.role);
   return (
     <Box
       position={"relative"}
@@ -102,104 +111,148 @@ const Sidebar = ({ user }: { user: User }) => {
           marginBottom: 1,
           gap: 2,
           alignItems: "end",
-          backgroundColor: "/dashboard" == path && "#02AAFF",
-          p: "/dashboard" == path && 1,
-          borderRadius: "/dashboard" == path && "10px",
+          backgroundColor: "/dashboard" == path ? "#02AAFF" : "",
+          p: "/dashboard" == path ? 1 : 0,
+          borderRadius: "/dashboard" == path ? "10px" : "0px",
           "&:hover": {
             color: "/dashboard" == path ? "" : "#02AAFF",
             cursor: "pointer",
           },
         }}
       >
-        <SpaceDashboardOutlinedIcon sx={{ fontSize: 20 }} />
-        <Link
-          href={"/dashboard"}
-          style={{ color: "white", textDecoration: "none" }}
-        >
-          <Typography
-            sx={{
-              "&:hover": {
-                color: "/dashboard" == path ? "" : "#02AAFF",
-                cursor: "pointer",
-              },
-            }}
+        <Can I="read" a="dashboard" ability={ability}>
+          <SpaceDashboardOutlinedIcon sx={{ fontSize: 20 }} />
+          <Link
+            href={"/dashboard"}
+            style={{ color: "white", textDecoration: "none" }}
           >
-            Dashboard
-          </Typography>
-        </Link>
+            <Typography
+              sx={{
+                "&:hover": {
+                  color: "/dashboard" == path ? "" : "#02AAFF",
+                  cursor: "pointer",
+                },
+              }}
+            >
+              Dashboard
+            </Typography>
+          </Link>
+        </Can>
       </Box>
       {/* Books admin */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          marginBottom: 1,
-          gap: 2,
-          alignItems: "end",
-          backgroundColor: "/books" == path && "#02AAFF",
-          p: "/books" == path && 1,
-          borderRadius: "/books" == path && "10px",
-          "&:hover": {
-            color: "/books" == path ? "" : "#02AAFF",
-            cursor: "pointer",
-          },
-        }}
-      >
-        <Can I="read" an="books" ability={ability}>
-          <FilterNoneIcon sx={{ fontSize: 20 }} />
-          <Link
-            href={"/books"}
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            <Typography
-              sx={{
-                "&:hover": {
-                  color: "/books" == path ? "" : "#02AAFF",
-                  cursor: "pointer",
-                },
-              }}
+      {user.role === "ADMIN" && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            marginBottom: 1,
+            gap: 2,
+            alignItems: "end",
+            backgroundColor: "/books" == path ? "#02AAFF" : "",
+            p: "/books" == path ? 1 : 0,
+            borderRadius: "/books" == path ? "10px" : "0px",
+            "&:hover": {
+              color: "/books" == path ? "" : "#02AAFF",
+              cursor: "pointer",
+            },
+          }}
+        >
+          <Can I="manage" an="books" ability={ability}>
+            <FilterNoneIcon sx={{ fontSize: 20 }} />
+            <Link
+              href={"/books"}
+              style={{ color: "white", textDecoration: "none" }}
             >
-              Books
-            </Typography>
-          </Link>
-        </Can>
-      </Box>
+              <Typography
+                sx={{
+                  "&:hover": {
+                    color: "/books" == path ? "" : "#02AAFF",
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                Books
+              </Typography>
+            </Link>
+          </Can>
+        </Box>
+      )}
       {/* Book owner */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          marginBottom: 1,
-          gap: 2,
-          alignItems: "end",
-          backgroundColor: "/book" == path && "#02AAFF",
-          p: "/book" == path && 1,
-          borderRadius: "/book" == path && "10px",
-          "&:hover": {
-            color: "/book" == path ? "" : "#02AAFF",
-            cursor: "pointer",
-          },
-        }}
-      >
-        <Can I="manage" a="book" ability={ability}>
-          <FilterNoneIcon sx={{ fontSize: 20 }} />
-          <Link
-            href={"/book"}
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            <Typography
-              sx={{
-                "&:hover": {
-                  color: "/book" == path ? "" : "#02AAFF",
-                  cursor: "pointer",
-                },
-              }}
+      {user.role === "OWNER" && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            marginBottom: 1,
+            gap: 2,
+            alignItems: "end",
+            backgroundColor: "/book" == path ? "02AAFF" : "",
+            p: "/book" == path ? 1 : 0,
+            borderRadius: "/book" == path ? "10px" : "0px",
+            "&:hover": {
+              color: "/book" == path ? "" : "#02AAFF",
+              cursor: "pointer",
+            },
+          }}
+        >
+          <Can I="manage" a="books" ability={ability}>
+            <FilterNoneIcon sx={{ fontSize: 20 }} />
+            <Link
+              href={"/book"}
+              style={{ color: "white", textDecoration: "none" }}
             >
-              Book Upload
-            </Typography>
-          </Link>
-        </Can>
-      </Box>
+              <Typography
+                sx={{
+                  "&:hover": {
+                    color: "/book" == path ? "" : "#02AAFF",
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                Book Upload
+              </Typography>
+            </Link>
+          </Can>
+        </Box>
+      )}
+      {/* Books user */}
+      {user.role === "USER" && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            marginBottom: 1,
+            gap: 2,
+            alignItems: "end",
+            backgroundColor: "/user/books" == path ? "#02AAFF" : "",
+            p: "/user/books" == path ? 1 : 0,
+            borderRadius: "/user/books" == path ? "10px" : "0px",
+            "&:hover": {
+              color: "/user/books" == path ? "" : "#02AAFF",
+              cursor: "pointer",
+            },
+          }}
+        >
+          <Can I="read" a="books" ability={ability}>
+            <FilterNoneIcon sx={{ fontSize: 20 }} />
+            <Link
+              href={"/user/books"}
+              style={{ color: "white", textDecoration: "none" }}
+            >
+              <Typography
+                sx={{
+                  "&:hover": {
+                    color: "/user/books" == path ? "" : "#02AAFF",
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                Books
+              </Typography>
+            </Link>
+          </Can>
+        </Box>
+      )}
       {/* owners admin */}
       <Box
         sx={{
@@ -208,9 +261,9 @@ const Sidebar = ({ user }: { user: User }) => {
           marginBottom: 1,
           gap: 2,
           alignItems: "end",
-          backgroundColor: "/owners" == path && "#02AAFF",
-          p: "/owners" == path && 1,
-          borderRadius: "/owners" == path && "10px",
+          backgroundColor: "/owners" == path ? "#02AAFF" : "",
+          p: "/owners" == path ? 1 : 0,
+          borderRadius: "/owners" == path ? "10px" : "0px",
           "&:hover": {
             color: "/owners" == path ? "" : "#02AAFF",
             cursor: "pointer",
@@ -254,9 +307,9 @@ const Sidebar = ({ user }: { user: User }) => {
                     marginBottom: 1,
                     gap: 2,
                     alignItems: "end",
-                    backgroundColor: link.path == path && "#02AAFF",
-                    p: link.path == path && 1,
-                    borderRadius: link.path == path && "10px",
+                    backgroundColor: link.path == path ? "#02AAFF" : "",
+                    p: link.path == path ? 1 : 0,
+                    borderRadius: link.path == path ? "10px" : "0px",
                     "&:hover": {
                       color: link.path == path ? "" : "#02AAFF",
                       cursor: "pointer",
@@ -293,9 +346,9 @@ const Sidebar = ({ user }: { user: User }) => {
                     marginBottom: 1,
                     gap: 2,
                     alignItems: "end",
-                    backgroundColor: link.path == path && "#02AAFF",
-                    p: link.path == path && 1,
-                    borderRadius: link.path == path && "10px",
+                    backgroundColor: link.path == path ? "#02AAFF" : "",
+                    p: link.path == path ? 1 : 0,
+                    borderRadius: link.path == path ? "10px" : "0px",
                     "&:hover": {
                       color: link.path == path ? "" : "#02AAFF",
                       cursor: "pointer",

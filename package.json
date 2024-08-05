@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@casl/ability": "^6.7.1",
+    "@casl/prisma": "^1.4.1",
     "@casl/react": "^4.0.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
