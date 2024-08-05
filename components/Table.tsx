@@ -5,95 +5,111 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-
-//example data type
-type Person = {
-  name: {
-    firstName: string;
-    lastName: string;
+import GreenSwitch from "@/components/GreenSwitch";
+import { Box, Button, FormControlLabel, Typography } from "@mui/material";
+import Switch from "@mui/material/Switch";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
+type owners = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  approved: boolean;
+  disabled: boolean;
+  userId: string;
+  _count: {
+    user: number;
+    books: number;
   };
-  address: string;
-  city: string;
-  state: string;
+  user: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    email: string;
+    password: string;
+    location: string;
+    phoneNumber: string;
+    image: string;
+    role: string;
+    wallet: number;
+  } | null;
 };
-
-//nested data is ok, see accessorKeys in ColumnDef below
-const data: Person[] = [
-  {
-    name: {
-      firstName: "John",
-      lastName: "Doe",
-    },
-    address: "261 Erdman Ford",
-    city: "East Daphne",
-    state: "Kentucky",
-  },
-  {
-    name: {
-      firstName: "Jane",
-      lastName: "Doe",
-    },
-    address: "769 Dominic Grove",
-    city: "Columbus",
-    state: "Ohio",
-  },
-  {
-    name: {
-      firstName: "Joe",
-      lastName: "Doe",
-    },
-    address: "566 Brakus Inlet",
-    city: "South Linda",
-    state: "West Virginia",
-  },
-  {
-    name: {
-      firstName: "Kevin",
-      lastName: "Vandy",
-    },
-    address: "722 Emie Stream",
-    city: "Lincoln",
-    state: "Nebraska",
-  },
-  {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Omaha",
-    state: "Nebraska",
-  },
-];
-
-const Table = () => {
+const Table = ({ data }: { data: owners[] }) => {
   //should be memoized or stable
-  const columns = useMemo<MRT_ColumnDef<Person>[]>(
+  const columns = useMemo<MRT_ColumnDef<owners>[]>(
     () => [
       {
-        accessorKey: "name.firstName", //access nested data with dot notation
-        header: "First Name",
+        accessorKey: "user.email",
+        header: "owner",
+        //Format a number in a cell render
+        Cell: ({ cell }) => (
+          <span>{cell.getValue<string>().split("@")[0]}</span>
+        ),
         size: 150,
       },
       {
-        accessorKey: "name.lastName",
-        header: "Last Name",
+        accessorKey: "_count.books",
+        header: "Upload",
         size: 150,
+        Cell: ({ cell }) => <span>{cell.getValue<string>()} Books</span>,
       },
       {
-        accessorKey: "address", //normal accessorKey
-        header: "Address",
-        size: 200,
-      },
-      {
-        accessorKey: "city",
-        header: "City",
+        accessorKey: "user.location",
+        header: "Location",
         size: 150,
       },
+
       {
-        accessorKey: "state",
-        header: "State",
+        accessorKey: "disabled",
+        header: "Status",
         size: 150,
+        Cell: ({ cell }) => (
+          <GreenSwitch
+            checked={cell ? true : false}
+            onChange={(e) => alert(e.target.checked)}
+            //inputProps={{ "aria-label": "controlled" }}
+          />
+        ),
+      },
+      //need two icons view delete
+      {
+        accessorKey: "Action",
+        header: "Action",
+        size: 150,
+        enableSorting: false, //disable sorting on this column
+        enableColumnFilter: false,
+
+        Cell: ({ cell }) => (
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <VisibilityIcon />
+            <DeleteIcon color="error" />
+          </Box>
+        ),
+      },
+      {
+        accessorKey: "approved",
+        header: "Approved",
+        size: 150,
+        enableSorting: false, //disable sorting on this column
+        enableColumnFilter: false,
+        Header: ({ column }) => <></>,
+        Cell: ({ cell }) => (
+          <>
+            {cell ? (
+              <Button variant="contained">Approve</Button>
+            ) : (
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "gray",
+                  "&:hover": { backgroundColor: "gray" },
+                }}
+              >
+                Approved
+              </Button>
+            )}
+          </>
+        ),
       },
     ],
     []
@@ -102,6 +118,7 @@ const Table = () => {
   const table = useMaterialReactTable({
     columns,
     data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    enableRowNumbers: true,
   });
 
   return <MaterialReactTable table={table} />;

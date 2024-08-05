@@ -22,12 +22,23 @@ model User {
   password    String
   location    String
   phoneNumber String
-  image       String  @default("")
-  role        String  @default("USER")
-  approved    Boolean @default(false)
-  disabled    Boolean @default(false)
-  wallet      Float   @default(0)
-  books       Book[]
+  image       String @default("")
+  role        String @default("USER")
+
+  wallet Float   @default(0)
+  owners Owner[]
+}
+
+model Owner {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  approved Boolean @default(false)
+  disabled Boolean @default(false)
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  books    Book[]
 }
 
 model Category {
@@ -47,13 +58,13 @@ model Book {
   author     String
   title      String
   approved   Boolean  @default(false)
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
   quantity   Int      @default(1)
   price      Float
   url        String   @default("")
-  userId     String
-  owner      User     @relation(fields: [userId], references: [id])
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  ownerId    String
+  owner      Owner    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, title])
+  @@unique([ownerId, title])
 }

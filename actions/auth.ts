@@ -1,6 +1,6 @@
 "use server";
 import { signin, signup } from "@/utils/authTool";
-import { COOKIE_NAME } from "@/utils/constants";
+import { COOKIE_NAME, ROLES } from "@/utils/constants";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -71,7 +71,7 @@ export const registerUser = async (
   });
 
   if (!data.success) return { error: data.error.flatten().fieldErrors };
-  data.data.role ? (data.data.role = "OWNER") : null;
+  data.data.role ? (data.data.role = ROLES.owner) : null;
 
   try {
     const { token } = await signup(data.data);

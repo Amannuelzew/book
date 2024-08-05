@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import db from "@/utils/db";
+import { ROLES } from "./constants";
 
 const createToken = (userId: string) => {
   return jwt.sign({ id: userId }, process.env.SECRET!);
@@ -62,6 +63,14 @@ export const signup = async ({
       role: role ? role : undefined,
     },
   });
+  //if user type is owner then create a record for this user in owners table
+  if (role == ROLES.owner)
+    await db.owner.create({
+      data: {
+        userId: user.id,
+      },
+    });
+
   const token = createToken(user.id);
   return { user, token };
 };

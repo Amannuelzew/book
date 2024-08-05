@@ -1,11 +1,36 @@
 "use client";
 import { routedefineAbilityFor } from "@/utils/ability";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import { User } from "@prisma/client";
 import { redirect } from "next/navigation";
-
-const Owner = ({ user }: { user: User }) => {
-  //based on access control defined users of type role[ADMIN,OWNER] can only visit this page
+import Table from "./Table";
+import { ROLES } from "@/utils/constants";
+type owners = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  approved: boolean;
+  disabled: boolean;
+  userId: string;
+  _count: {
+    user: number;
+    books: number;
+  };
+  user: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    email: string;
+    password: string;
+    location: string;
+    phoneNumber: string;
+    image: string;
+    role: string;
+    wallet: number;
+  } | null;
+};
+const Owners = ({ user, owners }: { user: User; owners: owners[] }) => {
+  //based on access control defined users of type role[ADMIN] can only visit this page
   const ability = routedefineAbilityFor(user);
 
   return (
@@ -36,10 +61,10 @@ const Owner = ({ user }: { user: User }) => {
             <Typography fontSize={20} fontWeight={"bold"} sx={{ my: 2 }}>
               List of Owners
             </Typography>
-            <Table />
+            <Table data={owners} />
           </Grid>
         </Grid>
-      ) : user.role == "OWNER" ? (
+      ) : user.role == ROLES.owner ? (
         redirect("/dashboard")
       ) : (
         redirect("/user/books")
@@ -48,4 +73,4 @@ const Owner = ({ user }: { user: User }) => {
   );
 };
 
-export default Owner;
+export default Owners;
