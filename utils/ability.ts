@@ -3,8 +3,20 @@
 
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
 import { User, Book } from "@prisma/client";
+import { PureAbility, subject } from "@casl/ability";
+import { createPrismaAbility, PrismaQuery, Subjects } from "@casl/prisma";
 
-export function sidebardefineAbilityFor(user: User) {
+type AppAbility = PureAbility<
+  [
+    string,
+    Subjects<{
+      User: User;
+      Book: Book;
+    }>
+  ],
+  PrismaQuery
+>;
+export function routedefineAbilityFor(user: User) {
   const { can, build } = new AbilityBuilder(createMongoAbility);
 
   if (user.role === "ADMIN") {
@@ -23,41 +35,19 @@ export function sidebardefineAbilityFor(user: User) {
 
   return build();
 }
-/* const admin = defineAbilityFor({ isAuthorised: true, role: "admin" });
-admin.can("read", "article"); // true
-admin.can("update", "profile"); // true
-admin.can("delete", "article"); // true
-admin.can("delete", "profile"); // true
-admin.can("create", "profile"); // false
+export function defineAbilityFor(user: User) {
+  const { can, cannot, build } = new AbilityBuilder<AppAbility>(
+    createPrismaAbility
+  );
 
-const manager = defineAbilityFor({ isAuthorised: true, role: "manager" });
-manager.can("read", "article"); // true
+  can("read", "Book", { owner: { every: { id: "1" } } });
 
-const author = defineAbilityFor({ isAuthorised: true, role: "author" });
-author.can("read", "article"); // true
+  const ability = build();
+  ability.can("read", "Book");
 
-const reader = defineAbilityFor({ isAuthorised: false });
-reader.can("read", "article"); // true
- */
+  if (user.role === "USER") {
+    can("read", "/user/books");
+  }
 
-import { PureAbility, subject } from "@casl/ability";
-import { createPrismaAbility, PrismaQuery, Subjects } from "@casl/prisma";
-
-type AppAbility = PureAbility<
-  [
-    string,
-    Subjects<{
-      User: User;
-      Book: Book;
-    }>
-  ],
-  PrismaQuery
->;
-const { can, cannot, build } = new AbilityBuilder<AppAbility>(
-  createPrismaAbility
-);
-
-can("read", "Book", { owner: { every: { id: "1" } } });
-
-const ability = build();
-ability.can("read", "Book");
+  return build();
+}

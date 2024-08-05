@@ -13,7 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { signout } from "@/actions/signout";
-import { sidebardefineAbilityFor } from "@/utils/ability";
+import { routedefineAbilityFor } from "@/utils/ability";
 import { User } from "@prisma/client";
 import { Can } from "@casl/react";
 const links = [
@@ -34,7 +34,7 @@ delete me
 const aa = new books("one", "1ae225f0-0fad-4a40-a761-980d596bb17"); */
 const Sidebar = ({ user }: { user: User }) => {
   const path = usePathname();
-  const ability = sidebardefineAbilityFor(user);
+  const ability = routedefineAbilityFor(user);
 
   return (
     <Box

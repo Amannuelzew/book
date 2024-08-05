@@ -13,25 +13,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id String @id @default(uuid())
+model User {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  
-  email String 
-  password String
-  location String
+  email       String
+  password    String
+  location    String
   phoneNumber String
-  image String @default("")
-  role String @default("USER")
-  books Book[] 
+  image       String  @default("")
+  role        String  @default("USER")
+  approved    Boolean @default(false)
+  disabled    Boolean @default(false)
+  wallet      Float   @default(0)
+  books       Book[]
 }
 
-model Book{
-  id String @id @default(uuid())
+model Category {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title String 
-  owner User[]
+
+  name  String
+  books Book[]
+}
+
+model Book {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author     String
+  title      String
+  approved   Boolean  @default(false)
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  quantity   Int      @default(1)
+  price      Float
+  url        String   @default("")
+  userId     String
+  owner      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
 }
