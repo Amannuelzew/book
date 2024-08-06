@@ -1,10 +1,10 @@
 "use client";
 import { Box, Grid, Typography } from "@mui/material";
-import Table from "@/components/OwnersTable";
 import { routedefineAbilityFor } from "@/utils/ability";
-import { Book, User } from "@prisma/client";
 import { redirect } from "next/navigation";
 import BooksTable from "./BooksTable";
+import { User } from "@prisma/client";
+import { ROLES } from "@/utils/constants";
 type books = {
   category: {
     id: string;
@@ -17,6 +17,7 @@ type books = {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+    location: string;
     approved: boolean;
     disabled: boolean;
     userId: string;
@@ -33,7 +34,7 @@ type books = {
   categoryId: string;
   ownerId: string;
 };
-const Books = ({ user, books }: { user: User; books: books[] }) => {
+const Books = ({ user, data }: { user: User; data: books[] }) => {
   const ability = routedefineAbilityFor(user);
   return (
     <>
@@ -63,10 +64,11 @@ const Books = ({ user, books }: { user: User; books: books[] }) => {
             <Typography fontSize={20} fontWeight={"bold"} sx={{ my: 2 }}>
               List of Books
             </Typography>
-            <BooksTable data={books} />
+
+            <BooksTable books={data} />
           </Grid>
         </Grid>
-      ) : user.role == "OWNER" ? (
+      ) : user.role == ROLES.owner ? (
         redirect("/dashboard")
       ) : (
         redirect("/user/books")

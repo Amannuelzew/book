@@ -81,6 +81,7 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
         size: 150,
         enableSorting: false, //disable sorting on this column
         enableColumnFilter: false,
+        enableColumnActions: false,
         Header: ({ column }) => <></>,
         Cell: ({ cell, row }) => (
           <>

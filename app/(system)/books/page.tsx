@@ -1,14 +1,36 @@
 import Books from "@/components/Books";
 import { getCurrentUser } from "@/utils/user";
 import db from "@/utils/db";
-const getBooks = () => {
-  return db.book.findMany({ include: { category: true, owner: true } });
+import { defineAbilityFor } from "@/utils/ability";
+import { accessibleBy } from "@casl/prisma";
+import { User } from "@prisma/client";
+const getBooks = async (user: User) => {
+  const ability = defineAbilityFor(user!);
+  const books = await db.book.findMany({
+    where: accessibleBy(ability).Book,
+    include: { category: true, owner: true },
+  });
+  return books;
 };
 const AdminBookspage = async () => {
+  //incase query params needed to be handeled
+  //const query = searchParams?.query || "";
+  //const books = await globalBookFilter(query);
+
   const user = await getCurrentUser();
-  const books = await getBooks();
-  console.log(books.length, "have");
-  return <Books user={user!} books={books} />;
+  const books = await getBooks(user!);
+  return <Books user={user!} data={books} />;
 };
 
 export default AdminBookspage;
+//incase query params needed to be handeled
+/* export const globalBookFilter = async (query: string) => {
+  const user = await getCurrentUser();
+  const ability = defineAbilityFor(user!);
+  const books = await db.book.findMany({
+    where: accessibleBy(ability).Book,
+    include: { category: true, owner: true },
+  });
+  const filter = books.filter((book) => book.owner.name.startsWith(query));
+  return filter;
+}; */

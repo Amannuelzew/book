@@ -23,20 +23,7 @@ const links = [
   { path: "", name: "Setting", icon: SettingsOutlinedIcon },
   { path: "", name: "Login as Owner", icon: AccountCircleOutlinedIcon },
 ];
-const style = {
-  color: "white",
-  textDecoration: "none",
-  ":hover": {},
-};
-/*
-delete me
- class books {
-  constructor(title: string, authorId: string) {
-    this.title = title;
-    this.authorId = authorId;
-  }
-}
-const aa = new books("one", "1ae225f0-0fad-4a40-a761-980d596bb17"); */
+
 const Sidebar = ({ user }: { user: User }) => {
   const path = usePathname();
   const ability = routedefineAbilityFor(user);
@@ -130,15 +117,11 @@ const Sidebar = ({ user }: { user: User }) => {
               "&:hover": {
                 color: "/dashboard" == path ? "" : "#02AAFF",
                 cursor: "pointer",
-                "& a": {
-                  color: "#02AAFF",
-                  cursor: "pointer",
-                },
               },
             }}
           >
             <SpaceDashboardOutlinedIcon sx={{ fontSize: 30 }} />
-            Dashboard
+            <Typography>Dashboard</Typography>
           </Box>
         </Link>
       </Can>
@@ -165,7 +148,7 @@ const Sidebar = ({ user }: { user: User }) => {
             }}
           >
             <FilterNoneIcon sx={{ fontSize: 30 }} />
-            Books
+            <Typography>Books</Typography>
           </Box>
         </Link>
       </Can>
@@ -189,7 +172,7 @@ const Sidebar = ({ user }: { user: User }) => {
             }}
           >
             <FilterNoneIcon sx={{ fontSize: 30 }} />
-            Book Upload
+            <Typography>Book Upload</Typography>
           </Box>
         </Link>
       </Can>
@@ -216,7 +199,7 @@ const Sidebar = ({ user }: { user: User }) => {
             }}
           >
             <FilterNoneIcon sx={{ fontSize: 30 }} />
-            Books
+            <Typography>Books</Typography>
           </Box>
         </Link>
       </Can>
@@ -243,7 +226,7 @@ const Sidebar = ({ user }: { user: User }) => {
             }}
           >
             <PersonOutlineOutlinedIcon sx={{ fontSize: 30 }} />
-            Owners
+            <Typography>Owners</Typography>
           </Box>
         </Link>
       </Can>
