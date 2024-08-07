@@ -12,17 +12,26 @@ const getCategories = async (user: User) => {
   });
   return categories;
 };
+const getOwners = async (user: User) => {
+  const ability = defineAbilityFor(user!);
+  const owners = await db.owner.findMany({
+    where: accessibleBy(ability).Owner,
+    include: { user: true },
+  });
+  return owners;
+};
 const colors = ["#49CA3A", "#FF2727", "#006AFE"];
 const Dashbordpage = async () => {
   const user = await getCurrentUser();
   const categories = await getCategories(user!);
-
+  const owners = await getOwners(user!);
   const data = categories.map((cat, index) => ({
     value: cat._count.books,
     label: cat.name,
     color: colors[index],
   }));
-  return <Dashboard user={user!} data={data} />;
+  const revenue = owners.reduce((sum, rev) => sum + rev.user.wallet, 0);
+  return <Dashboard user={user!} data={data} revenue={revenue} />;
 };
 
 export default Dashbordpage;

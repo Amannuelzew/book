@@ -3,5 +3,8 @@ export const formatDate = (date: Date) => {
     year: "numeric",
     month: "short",
     day: "numeric",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 };

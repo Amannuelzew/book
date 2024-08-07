@@ -47,6 +47,8 @@ export function defineAbilityFor(user: User) {
     can("manage", "Category");
   } else if (user.role === ROLES.owner) {
     can("read", "Book", { owner: { userId: { equals: user.id } } });
+    can("manage", "Owner", { userId: { equals: user.id } });
+    can("read", "Category");
   } else {
     can("read", "Book", { approved: true });
     can("update", "Book");

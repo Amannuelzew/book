@@ -11,7 +11,15 @@ type dataProps = {
   value: number;
   color: string;
 }[];
-const Dashboard = ({ user, data }: { user: User; data: dataProps }) => {
+const Dashboard = ({
+  user,
+  data,
+  revenue,
+}: {
+  user: User;
+  data: dataProps;
+  revenue: number;
+}) => {
   //based on access control defined users of type role[ADMIN,OWNER] can only visit this page
   const ability = routedefineAbilityFor(user);
 
@@ -25,10 +33,12 @@ const Dashboard = ({ user, data }: { user: User; data: dataProps }) => {
             item
             sx={{ p: 2, borderRadius: "10px", backgroundColor: "white" }}
           >
-            <Box display={"inline"} fontWeight="bold">
-              Admin
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography fontSize={20} fontWeight={"bold"}>
+                Admin
+              </Typography>
+              <Typography>/Dashboard</Typography>
             </Box>
-            <Box display={"inline"}>/Dashboard</Box>
           </Grid>
           {/* second row */}
           <Grid item container sm={12} sx={{ my: 1, gap: 0.4 }}>
@@ -43,8 +53,10 @@ const Dashboard = ({ user, data }: { user: User; data: dataProps }) => {
                 backgroundColor: "white",
               }}
             >
-              <Typography>This Month Statistics</Typography>
-              <Typography>{formatDate(new Date())}</Typography>
+              <Typography sx={{ mt: 1 }} fontSize={16} fontWeight={600}>
+                This Month Statistics
+              </Typography>
+              <Typography fontSize={13}>{formatDate(new Date())}</Typography>
               {/* revenue card */}
               <Card sx={{ p: 2, my: 2 }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -53,11 +65,15 @@ const Dashboard = ({ user, data }: { user: User; data: dataProps }) => {
                 </Box>
                 <hr />
                 <Typography fontSize={30} fontWeight={"bold"} sx={{ my: 2 }}>
-                  ETB 940.00
+                  ETB {revenue.toFixed(2)}
                   <sub style={{ color: "red", fontSize: "15px" }}>1.5%</sub>
                 </Typography>
-                <Typography>Compared to ETB70.00 last month</Typography>
-                <Typography>Last Month Income ETB 24532.00</Typography>
+                <Typography fontSize={13}>
+                  Compared to ETB70.00 last month
+                </Typography>
+                <Typography sx={{ mt: 1 }} fontSize={13} fontWeight={600}>
+                  Last Month Income ETB 24532.00
+                </Typography>
               </Card>
               {/* pie card */}
               <Card>
@@ -97,7 +113,7 @@ const Dashboard = ({ user, data }: { user: User; data: dataProps }) => {
                             sx={{
                               display: "flex",
                               gap: 1,
-                              alignContent: "center",
+                              alignItems: "center",
                             }}
                           >
                             <Box
