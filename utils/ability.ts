@@ -50,7 +50,7 @@ export function defineAbilityFor(user: User) {
     can("manage", "Owner", { userId: { equals: user.id } });
     can("read", "Category");
   } else {
-    can("read", "Book", { approved: true });
+    can("read", "Book", { approved: true, owner: { approved: true } });
     can("update", "Book");
   }
 

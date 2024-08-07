@@ -23,7 +23,7 @@ const Signup = () => {
   });
 
   return (
-    <Box sx={{ paddingX: 10, paddingY: 5 }}>
+    <Box sx={{ paddingX: 10, paddingY: 2 }}>
       <Box
         sx={{
           display: "flex",
@@ -53,6 +53,7 @@ const Signup = () => {
             name="email"
             label="Email address"
             fullWidth
+            size="small"
             helperText={state?.error?.email && state?.error?.email}
           />
           <TextField
@@ -61,7 +62,7 @@ const Signup = () => {
             type="password"
             name="password"
             label="password"
-            size="medium"
+            size="small"
             fullWidth
             helperText={state?.error?.password && state?.error?.password}
           />
@@ -72,6 +73,7 @@ const Signup = () => {
             name="confirmPassword"
             label="confirm Password"
             fullWidth
+            size="small"
             helperText={
               state?.error?.confirmPassword && state?.error?.confirmPassword
             }
@@ -82,6 +84,7 @@ const Signup = () => {
             name="location"
             label="location"
             fullWidth
+            size="small"
             helperText={state?.error?.location && state?.error?.location}
           />
           <TextField
@@ -91,6 +94,7 @@ const Signup = () => {
             name="phoneNumber"
             label="phone Number"
             fullWidth
+            size="small"
             helperText={state?.error?.phoneNumber && state?.error?.phoneNumber}
           />
 
