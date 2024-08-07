@@ -65,7 +65,7 @@ export const approveBook = async (id: string) => {
       approved: !book.approved,
     },
   });
-  revalidatePath("/books");
+  // revalidatePath("/books");
 };
 
 export const disableOwner = async (id: string) => {

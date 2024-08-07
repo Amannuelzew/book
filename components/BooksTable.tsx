@@ -55,32 +55,11 @@ const BooksTable = ({ books }: { books: books[] }) => {
 
   const handleApprove = (id: string, rowId: string, value: boolean) => {
     startTransition(() => approveBook(id));
-
-    //setData(data.filter((dd) => dd.id === id));
-    console.log(
-      data.map((dd) => (dd.id === id ? { ...dd, approved: value } : dd))
+    setData((prev) =>
+      prev.map((dd) => (dd.id === id ? { ...dd, approved: value } : dd))
     );
-    //setData(data.map((dd) => (dd.id === id ? { ...dd, approved: value } : dd)));
   };
 
-  /* const handleApprove = async (id: string, rowId: string) => {
-    const data = await fetch("http://localhost:300/api/books", {
-      method: "PATCh",
-      body: JSON.stringify({ id: id }),
-    }).then((data) => data.json());
-  }; */
-  //get all available books
-  /* useEffect(() => {
-    const fetchData = async () => {
-      if (process.env.NODE_ENV == "development") {
-        const data = await fetch("http://localhost:3000/api/books").then(
-          (res) => res.json()
-        );
-        setData(data);
-      }
-    };
-    fetchData();
-  }, []); */
   useEffect(() => {
     const fetchData = async () => {
       setData(await globalBookfilter(globalFilter));
