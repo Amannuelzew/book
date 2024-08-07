@@ -1,13 +1,17 @@
 "use client";
 import { routedefineAbilityFor } from "@/utils/ability";
 import { Box, Card, Grid, Typography } from "@mui/material";
-import { User } from "@prisma/client";
+import { User, Category } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Graph from "./Graph";
 import Pie from "./Pie";
 import { formatDate } from "@/utils/formatters";
-
-const Dashboard = ({ user }: { user: User }) => {
+type dataProps = {
+  label: string;
+  value: number;
+  color: string;
+}[];
+const Dashboard = ({ user, data }: { user: User; data: dataProps }) => {
   //based on access control defined users of type role[ADMIN,OWNER] can only visit this page
   const ability = routedefineAbilityFor(user);
 
@@ -69,8 +73,9 @@ const Dashboard = ({ user }: { user: User }) => {
                 </Box>
 
                 <Box>
-                  <Pie />
+                  <Pie data={data} />
                 </Box>
+                {/* pie legend */}
                 <Box
                   sx={{
                     display: "flex",
@@ -78,45 +83,37 @@ const Dashboard = ({ user }: { user: User }) => {
                     p: 2,
                   }}
                 >
-                  <Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Box
-                        sx={{
-                          backgroundColor: "blue",
-                          width: "20px",
-                          height: "20px",
-                          borderRadius: "10px",
-                        }}
-                      ></Box>
-                      <Typography>Fiction</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Box
-                        sx={{
-                          backgroundColor: "blue",
-                          width: "20px",
-                          height: "20px",
-                          borderRadius: "10px",
-                        }}
-                      ></Box>
-                      <Typography>Self Help</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Box
-                        sx={{
-                          backgroundColor: "red",
-                          width: "20px",
-                          height: "20px",
-                          borderRadius: "10px",
-                        }}
-                      ></Box>
-                      <Typography>Business</Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <Typography>54</Typography>
-                    <Typography>33</Typography>
-                    <Typography>11</Typography>
+                  <Box sx={{ width: 1 }}>
+                    {data.map((d, index) => {
+                      return (
+                        <Box
+                          key={index}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: 1,
+                              alignContent: "center",
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                backgroundColor: d.color,
+                                width: 20,
+                                height: 20,
+                                borderRadius: 30,
+                              }}
+                            ></Box>
+                            <Typography fontSize={16}>{d.label}</Typography>
+                          </Box>
+                          <Typography fontSize={16}>{d.value}</Typography>
+                        </Box>
+                      );
+                    })}
                   </Box>
                 </Box>
               </Card>

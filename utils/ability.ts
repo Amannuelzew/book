@@ -1,5 +1,5 @@
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
-import { User, Book, Owner } from "@prisma/client";
+import { User, Book, Owner, Category } from "@prisma/client";
 import { PureAbility } from "@casl/ability";
 import { createPrismaAbility, PrismaQuery, Subjects } from "@casl/prisma";
 import { ROLES } from "./constants";
@@ -11,6 +11,7 @@ type AppAbility = PureAbility<
       User: User;
       Book: Book;
       Owner: Owner;
+      Category: Category;
     }>
   ],
   PrismaQuery
@@ -43,6 +44,7 @@ export function defineAbilityFor(user: User) {
     can("manage", "Book");
     can("manage", "Owner");
     can("manage", "User");
+    can("manage", "Category");
   } else if (user.role === ROLES.owner) {
     can("read", "Book", { owner: { userId: { equals: user.id } } });
   } else {
