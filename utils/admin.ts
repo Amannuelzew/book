@@ -39,10 +39,18 @@ const getbooks = async () => {
   });
   return books;
 };
+const getowners = async () => {
+  //owners are filterd based casl access control defn
+  const user = await getCurrentUser();
+  const ability = defineAbilityFor(user!);
+  const owners = await db.owner.findMany({
+    where: accessibleBy(ability).Owner,
+  });
+  return owners;
+};
 export const approveOwner = async (id: string) => {
-  //remove owner
-  //casl
-  const owner = await db.owner.findUnique({ where: { id } });
+  const owners = await getowners();
+  const owner = owners.filter((own) => own.id === id)[0];
   await db.owner.update({
     where: { id: owner!.id },
     data: {
@@ -51,13 +59,22 @@ export const approveOwner = async (id: string) => {
   });
   revalidatePath("/owners");
 };
+export const disableOwner = async (id: string) => {
+  const owners = await getowners();
+  const owner = owners.filter((own) => own.id === id)[0];
+  console.log(owner.disabled, "ft", !owner.disabled);
+  await db.owner.update({
+    where: { id: owner!.id },
+    data: {
+      disabled: !owner.disabled,
+    },
+  });
+  console.log(owner.disabled);
+  revalidatePath("/owners");
+};
 export const approveBook = async (id: string) => {
-  //books are filterd based casl access control defn
-  const user = await getCurrentUser();
-  const ability = defineAbilityFor(user!);
-  const boook = await db.book.findMany({ where: accessibleBy(ability).Book });
-
-  const book = boook.filter((book) => book.id === id)[0];
+  const books = await getbooks();
+  const book = books.filter((book) => book.id === id)[0];
 
   await db.book.update({
     where: { id: book!.id },
@@ -68,20 +85,7 @@ export const approveBook = async (id: string) => {
   // revalidatePath("/books");
 };
 
-export const disableOwner = async (id: string) => {
-  //casl**
-  const user = await getCurrentUser();
-
-  const owner = await db.owner.findUnique({ where: { id } });
-  await db.owner.update({
-    where: { id: owner!.id },
-    data: {
-      disabled: !owner!.disabled,
-    },
-  });
-  revalidatePath("/owner");
-};
-
+//server side filtering
 export const globalBookfilter = async (query: string) => {
   const books = await getbooks();
   const filter = books.filter(

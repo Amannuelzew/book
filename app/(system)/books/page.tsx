@@ -4,6 +4,7 @@ import db from "@/utils/db";
 import { defineAbilityFor } from "@/utils/ability";
 import { accessibleBy } from "@casl/prisma";
 import { User } from "@prisma/client";
+//get books based on role
 const getBooks = async (user: User) => {
   const ability = defineAbilityFor(user!);
   const books = await db.book.findMany({

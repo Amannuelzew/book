@@ -25,7 +25,7 @@ const Owners = ({ user, owners }: { user: User; owners: owners[] }) => {
 
   return (
     <>
-      {ability.can("read", "/dashboard") ? (
+      {ability.can("read", "/owners") ? (
         <Grid
           container
           direction={"row"}

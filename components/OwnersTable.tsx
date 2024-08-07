@@ -9,7 +9,7 @@ import GreenSwitch from "@/components/GreenSwitch";
 import { Box, Button } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { approveOwner } from "@/utils/admin";
+import { approveOwner, disableOwner } from "@/utils/admin";
 type owners = {
   id: string;
   createdAt: Date;
@@ -28,6 +28,9 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
   const [pending, startTransition] = useTransition();
   const handleApprove = (id: string) => {
     startTransition(() => approveOwner(id));
+  };
+  const handleDisable = (id: string) => {
+    startTransition(() => disableOwner(id));
   };
   //should be memoized or stable
   const columns = useMemo<MRT_ColumnDef<owners>[]>(
@@ -52,11 +55,10 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
         accessorKey: "disabled",
         header: "Status",
         size: 150,
-        Cell: ({ cell }) => (
+        Cell: ({ cell, row }) => (
           <GreenSwitch
-            checked={cell ? true : false}
-            onChange={(e) => alert(e.target.checked)}
-            //inputProps={{ "aria-label": "controlled" }}
+            checked={row.original.disabled ? false : true}
+            onChange={() => handleDisable(row.original.id)}
           />
         ),
       },
