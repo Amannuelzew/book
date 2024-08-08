@@ -1,27 +1,55 @@
 "use client";
-import { routedefineAbilityFor } from "@/utils/ability";
+import { defineAbilityFor, routedefineAbilityFor } from "@/utils/ability";
 import { Box, Card, Grid, Typography } from "@mui/material";
 import { User, Category } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Graph from "./Graph";
 import Pie from "./Pie";
 import { formatDate } from "@/utils/formatters";
+import AdminDashboardBooksTable from "./AdminDashboardBooksTable";
+import OwnerDashboardBooksTable from "./OwnerDashboardBooksTable";
 type dataProps = {
   label: string;
   value: number;
   color: string;
 }[];
+type booksProps = {
+  owner: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    location: string;
+    approved: boolean;
+    disabled: boolean;
+    userId: string;
+  };
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  author: string;
+  title: string;
+  approved: boolean;
+  quantity: number;
+  price: number;
+  url: string;
+  categoryId: string;
+  ownerId: string;
+};
 const Dashboard = ({
   user,
   data,
   revenue,
+  books,
 }: {
   user: User;
   data: dataProps;
   revenue: number;
+  books: booksProps[];
 }) => {
   //based on access control defined users of type role[ADMIN,OWNER] can only visit this page
   const ability = routedefineAbilityFor(user);
+  const ablities = defineAbilityFor(user);
 
   return (
     <>
@@ -35,7 +63,7 @@ const Dashboard = ({
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography fontSize={20} fontWeight={"bold"}>
-                Admin
+                {ablities.can("create", "Category") ? "Admin" : "Owner"}
               </Typography>
               <Typography>/Dashboard</Typography>
             </Box>
@@ -153,7 +181,11 @@ const Dashboard = ({
                 <Typography fontSize={20} fontWeight={"bold"}>
                   Live Book Status
                 </Typography>
-                {/* <Table /> */}
+                {ablities.can("create", "Category") ? (
+                  <AdminDashboardBooksTable data={books} />
+                ) : (
+                  <OwnerDashboardBooksTable data={books} />
+                )}
               </Grid>
               {/* graph row */}
               <Grid sm={12}>

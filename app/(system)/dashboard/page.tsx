@@ -9,6 +9,7 @@ const getCategories = async (user: User) => {
   const categories = await db.category.findMany({
     where: accessibleBy(ability).Category,
     select: { _count: true, name: true },
+    orderBy: { createdAt: "desc" },
   });
   return categories;
 };
@@ -20,18 +21,27 @@ const getOwners = async (user: User) => {
   });
   return owners;
 };
+const getBooks = async (user: User) => {
+  const ability = defineAbilityFor(user!);
+  const books = await db.book.findMany({
+    where: accessibleBy(ability).Book,
+    include: { owner: true },
+  });
+  return books;
+};
 const colors = ["#49CA3A", "#FF2727", "#006AFE"];
 const Dashbordpage = async () => {
   const user = await getCurrentUser();
   const categories = await getCategories(user!);
   const owners = await getOwners(user!);
+  const books = await getBooks(user!);
   const data = categories.map((cat, index) => ({
     value: cat._count.books,
     label: cat.name,
     color: colors[index],
   }));
   const revenue = owners.reduce((sum, rev) => sum + rev.user.wallet, 0);
-  return <Dashboard user={user!} data={data} revenue={revenue} />;
+  return <Dashboard user={user!} data={data} revenue={revenue} books={books} />;
 };
 
 export default Dashbordpage;

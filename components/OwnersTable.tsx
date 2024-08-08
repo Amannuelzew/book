@@ -1,12 +1,12 @@
 "use client";
-import { useMemo, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
 import GreenSwitch from "@/components/GreenSwitch";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, Typography } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { approveOwner, disableOwner } from "@/utils/admin";
@@ -25,6 +25,13 @@ type owners = {
   };
 };
 const OwnersTable = ({ data }: { data: owners[] }) => {
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState(0);
+  const handleOpen = (id: string) => {
+    setOpen(true);
+    setCurrent(parseInt(id));
+  };
+  const handleClose = () => setOpen(false);
   const [pending, startTransition] = useTransition();
   const handleApprove = (id: string) => {
     startTransition(() => approveOwner(id));
@@ -32,7 +39,7 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
   const handleDisable = (id: string) => {
     startTransition(() => disableOwner(id));
   };
-  //should be memoized or stable
+
   const columns = useMemo<MRT_ColumnDef<owners>[]>(
     () => [
       {
@@ -62,7 +69,6 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
           />
         ),
       },
-      //need two icons view delete
       {
         accessorKey: "Action",
         header: "Action",
@@ -70,10 +76,13 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
         enableSorting: false, //disable sorting on this column
         enableColumnFilter: false,
 
-        Cell: ({ cell }) => (
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <VisibilityIcon />
-            <DeleteIcon color="error" />
+        Cell: ({ cell, row }) => (
+          <Box>
+            <Box sx={{ display: "flex", gap: 2, cursor: "pointer" }}>
+              <VisibilityIcon onClick={() => handleOpen(row.id)} />
+              <DeleteIcon color="error" />
+            </Box>
+            <div></div>
           </Box>
         ),
       },
@@ -81,7 +90,7 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
         accessorKey: "approved",
         header: "Approved",
         size: 150,
-        enableSorting: false, //disable sorting on this column
+        enableSorting: false,
         enableColumnFilter: false,
         enableColumnActions: false,
         Header: ({ column }) => <></>,
@@ -119,7 +128,16 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
     enableRowNumbers: true,
   });
 
-  return <MaterialReactTable table={table} />;
+  return (
+    <>
+      <MaterialReactTable table={table} />
+      <Dialog onClose={handleClose} open={open}>
+        <DialogTitle>Set backup account</DialogTitle>
+        <Typography>Name</Typography>
+        <Typography>{data[current].name}</Typography>
+      </Dialog>
+    </>
+  );
 };
 
 export default OwnersTable;
