@@ -176,7 +176,7 @@ const Sidebar = ({ user }: { user: User }) => {
           </Box>
         </Link>
       </Can>
-      {/* Books user */}
+      {/* Bookslist user */}
       <Can I="read" a="/user/books" ability={ability}>
         <Link
           href={"/user/books"}

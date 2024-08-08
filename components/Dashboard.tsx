@@ -28,6 +28,7 @@ type booksProps = {
   createdAt: Date;
   updatedAt: Date;
   author: string;
+  available: boolean;
   title: string;
   approved: boolean;
   quantity: number;

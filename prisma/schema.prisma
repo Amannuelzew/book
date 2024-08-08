@@ -63,6 +63,7 @@ model Book {
   quantity   Int      @default(1)
   price      Float
   url        String   @default("")
+  available  Boolean  @default(true)
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
   ownerId    String

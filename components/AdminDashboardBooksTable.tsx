@@ -5,6 +5,7 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
+import { Box, Typography } from "@mui/material";
 type books = {
   owner: {
     id: string;
@@ -21,6 +22,7 @@ type books = {
   updatedAt: Date;
   author: string;
   title: string;
+  available: boolean;
   approved: boolean;
   quantity: number;
   price: number;
@@ -39,7 +41,6 @@ const AdminDashboardBooksTable = ({ data }: { data: books[] }) => {
         enableColumnFilter: false,
         enableColumnActions: false,
       },
-      //status
       {
         accessorKey: "title",
         header: "Title",
@@ -47,6 +48,40 @@ const AdminDashboardBooksTable = ({ data }: { data: books[] }) => {
         enableSorting: false,
         enableColumnFilter: false,
         enableColumnActions: false,
+      },
+      {
+        accessorKey: "available",
+        header: "status",
+        size: 150,
+        enableSorting: false,
+        enableColumnFilter: false,
+        enableColumnActions: false,
+        Cell: ({ cell, row }) => (
+          <Box>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    backgroundColor: cell ? "#49CA3A" : "red",
+                    width: 15,
+                    height: 15,
+                    borderRadius: 30,
+                    border: 1,
+                    borderColor: cell ? "#49CAEE" : "red",
+                  }}
+                ></Box>
+                <Typography>{cell ? "Available" : "Rented"}</Typography>
+              </Box>
+            </Box>
+            <div></div>
+          </Box>
+        ),
       },
       {
         accessorKey: "price",
