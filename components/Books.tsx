@@ -1,10 +1,10 @@
 "use client";
 import { Box, Grid, Typography } from "@mui/material";
-import { routedefineAbilityFor } from "@/utils/ability";
+import { defineAbilityFor, routedefineAbilityFor } from "@/utils/ability";
 import { redirect } from "next/navigation";
-import BooksTable from "./BooksTable";
+import AdminBooksTable from "./AdminBooksTable";
 import { User } from "@prisma/client";
-import { ROLES } from "@/utils/constants";
+import OwnersBooksTable from "./OwnerBooksTable";
 type books = {
   category: {
     id: string;
@@ -27,6 +27,7 @@ type books = {
   updatedAt: Date;
   author: string;
   title: string;
+  available: boolean;
   approved: boolean;
   quantity: number;
   price: number;
@@ -36,6 +37,7 @@ type books = {
 };
 const Books = ({ user, data }: { user: User; data: books[] }) => {
   const ability = routedefineAbilityFor(user);
+  const ablities = defineAbilityFor(user);
   return (
     <>
       {ability.can("read", "/books") ? (
@@ -52,7 +54,7 @@ const Books = ({ user, data }: { user: User; data: books[] }) => {
             sx={{ p: 2, borderRadius: "10px", backgroundColor: "white" }}
           >
             <Box display={"inline"} fontWeight="bold">
-              Admin
+              {ablities.can("create", "Category") ? "Admin" : "Owner"}
             </Box>
             <Box display={"inline"}>/Books</Box>
           </Grid>
@@ -65,11 +67,13 @@ const Books = ({ user, data }: { user: User; data: books[] }) => {
               List of Books
             </Typography>
 
-            <BooksTable books={data} />
+            {ablities.can("create", "Category") ? (
+              <AdminBooksTable books={data} />
+            ) : (
+              <OwnersBooksTable data={data} />
+            )}
           </Grid>
         </Grid>
-      ) : user.role == ROLES.owner ? (
-        redirect("/dashboard")
       ) : (
         redirect("/user/books")
       )}

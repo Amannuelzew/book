@@ -6,11 +6,22 @@ import {
   type MRT_ColumnDef,
 } from "material-react-table";
 import GreenSwitch from "@/components/GreenSwitch";
-import { Box, Button, Dialog, DialogTitle, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { approveOwner, disableOwner } from "@/utils/admin";
 type owners = {
+  user: {
+    email: string;
+    phoneNumber: string;
+  };
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -131,10 +142,46 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
   return (
     <>
       <MaterialReactTable table={table} />
-      <Dialog onClose={handleClose} open={open}>
+      <Dialog
+        onClose={handleClose}
+        open={open}
+        fullWidth
+        sx={{ borderRadius: "5" }}
+      >
         <DialogTitle>Set backup account</DialogTitle>
-        <Typography>Name</Typography>
-        <Typography>{data[current].name}</Typography>
+        <Box
+          sx={{
+            p: 5,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <TextField
+            value={data[current].name}
+            label="Name"
+            disabled
+            fullWidth
+          />
+          <TextField
+            value={data[current].user.email}
+            label="Email"
+            disabled
+            fullWidth
+          />
+          <TextField
+            value={data[current].location}
+            label="Location"
+            disabled
+            fullWidth
+          />
+          <TextField
+            value={data[current].user.phoneNumber}
+            label="Phone Number"
+            disabled
+            fullWidth
+          />
+        </Box>
       </Dialog>
     </>
   );

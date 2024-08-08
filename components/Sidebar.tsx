@@ -62,39 +62,7 @@ const Sidebar = ({ user }: { user: User }) => {
           <Typography fontSize={20}>Book Rent</Typography>
         </Box>
       </Box>
-      {/*  {links
-        .map((link, i) => {
-          return (
-            <Link
-              href={link.path}
-              key={i}
-              style={{ color: "white", textDecoration: "none" }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: 2,
-                  gap: 2,
-                  alignItems: "center",
-                  backgroundColor: link.path == path && "#02AAFF",
-                  p: link.path == path && 1,
-                  borderRadius: link.path == path && "10px",
-                  "&:hover": {
-                    color: link.path == path ? "" : "#02AAFF",
-                    cursor: "pointer",
-                  },
-                }}
-              >
-                <link.icon sx={{ fontSize: 30, }} />
 
-                <Typography>{link.name}</Typography>
-              </Box>
-            </Link>
-          );
-        })
-        .slice(0, 5)}
- */}
       {/* Dashboard */}
       <Can I="read" a="/dashboard" ability={ability}>
         <Link
@@ -125,7 +93,7 @@ const Sidebar = ({ user }: { user: User }) => {
           </Box>
         </Link>
       </Can>
-      {/* Books admin */}
+      {/* list of books */}
       <Can I="read" a="/books" ability={ability}>
         <Link
           href={"/books"}
@@ -152,9 +120,12 @@ const Sidebar = ({ user }: { user: User }) => {
           </Box>
         </Link>
       </Can>
-      {/* Book owner */}
-      <Can I="read" a="/book" ability={ability}>
-        <Link href={"/book"} style={{ color: "white", textDecoration: "none" }}>
+      {/* upload book */}
+      <Can I="read" a="/upload" ability={ability}>
+        <Link
+          href={"/upload"}
+          style={{ color: "white", textDecoration: "none" }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -162,11 +133,11 @@ const Sidebar = ({ user }: { user: User }) => {
               marginBottom: 2,
               gap: 2,
               alignItems: "center",
-              backgroundColor: "/book" == path ? "#02AAFF" : "",
-              p: "/book" == path ? 1 : 0,
-              borderRadius: "/book" == path ? "10px" : "0px",
+              backgroundColor: "/upload" == path ? "#02AAFF" : "",
+              p: "/upload" == path ? 1 : 0,
+              borderRadius: "/upload" == path ? "10px" : "0px",
               "&:hover": {
-                color: "/book" == path ? "" : "#02AAFF",
+                color: "/upload" == path ? "" : "#02AAFF",
                 cursor: "pointer",
               },
             }}
@@ -176,7 +147,7 @@ const Sidebar = ({ user }: { user: User }) => {
           </Box>
         </Link>
       </Can>
-      {/* Bookslist user */}
+      {/*edit meeee lsit of Books */}
       <Can I="read" a="/user/books" ability={ability}>
         <Link
           href={"/user/books"}
@@ -203,7 +174,7 @@ const Sidebar = ({ user }: { user: User }) => {
           </Box>
         </Link>
       </Can>
-      {/* owners admin */}
+      {/* list of owners  */}
       <Can I="read" a="/owners" ability={ability}>
         <Link
           href={"/owners"}

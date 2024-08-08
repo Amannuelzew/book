@@ -44,7 +44,7 @@ type books = {
   categoryId: string;
   ownerId: string;
 };
-const BooksTable = ({ books }: { books: books[] }) => {
+const AdminBooksTable = ({ books }: { books: books[] }) => {
   const [pending, startTransition] = useTransition();
   const [globalFilter, setGlobalFilter] = useState("");
   const [approve, setApprove] = useState<{ id: string; value: boolean }>();
@@ -170,4 +170,4 @@ const BooksTable = ({ books }: { books: books[] }) => {
   return <MaterialReactTable table={table} />;
 };
 
-export default BooksTable;
+export default AdminBooksTable;

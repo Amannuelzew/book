@@ -26,7 +26,8 @@ export function routedefineAbilityFor(user: User) {
   }
 
   if (user.role === "OWNER") {
-    can("read", "/book");
+    can("read", "/books");
+    can("read", "/upload");
     can("read", "/dashboard");
   }
   if (user.role === "USER") {

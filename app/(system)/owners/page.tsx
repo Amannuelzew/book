@@ -9,7 +9,10 @@ const getOwners = async (user: User) => {
   const ability = defineAbilityFor(user!);
   const owners = await db.owner.findMany({
     where: accessibleBy(ability).Owner,
-    include: { _count: true },
+    include: {
+      _count: true,
+      user: { select: { email: true, phoneNumber: true } },
+    },
   });
   return owners;
 };
