@@ -32,7 +32,7 @@ export function routedefineAbilityFor(user: User) {
   }
   if (user.role === "USER") {
     can("read", "/books");
-    can("read", "/user/rent");
+    can("read", "/user/rents");
   }
 
   return build();
@@ -49,14 +49,15 @@ export function defineAbilityFor(user: User, id?: string) {
     can("manage", "User");
     can("manage", "Category");
   } else if (user.role === ROLES.owner) {
-    can("read", "Book", { owner: { userId: { equals: user.id } } });
+    can("manage", "Book", { owner: { userId: { equals: user.id } } });
     can("manage", "Owner", { userId: { equals: user.id } });
     can("read", "Category", { books: { some: { ownerId: id } } });
   } else {
     can("read", "Book", {
       approved: true,
-      owner: { approved: true },
+      owner: { approved: true, AND: { disabled: false } },
       available: true,
+      quantity: { gt: 0 },
     });
     can("update", "Book");
   }

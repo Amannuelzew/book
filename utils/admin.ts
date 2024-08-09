@@ -62,14 +62,12 @@ export const approveOwner = async (id: string) => {
 export const disableOwner = async (id: string) => {
   const owners = await getowners();
   const owner = owners.filter((own) => own.id === id)[0];
-  console.log(owner.disabled, "ft", !owner.disabled);
   await db.owner.update({
     where: { id: owner!.id },
     data: {
       disabled: !owner.disabled,
     },
   });
-  console.log(owner.disabled);
   revalidatePath("/owners");
 };
 export const approveBook = async (id: string) => {

@@ -56,7 +56,7 @@ const Dashbordpage = async () => {
     return acc;
   }, {});
   const data = categories.map((cat, index) => ({
-    value: count[cat.id],
+    value: count[cat.id] ? count[cat.id] : 0,
     label: cat.name,
     color: colors[index],
   }));

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import AdminBooksTable from "./AdminBooksTable";
 import { User } from "@prisma/client";
 import OwnersBooksTable from "./OwnerBooksTable";
+import UsersBooksTable from "./UsersBooksTable";
 type books = {
   category: {
     id: string;
@@ -53,10 +54,12 @@ const Books = ({ user, data }: { user: User; data: books[] }) => {
             item
             sx={{ p: 2, borderRadius: "10px", backgroundColor: "white" }}
           >
-            <Box display={"inline"} fontWeight="bold">
-              {ablities.can("create", "Category") ? "Admin" : "Owner"}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography fontSize={20} fontWeight={"bold"}>
+                {ablities.can("create", "Book") ? "Owner" : "User"}
+              </Typography>
+              <Typography display={"inline"}>/Books</Typography>
             </Box>
-            <Box display={"inline"}>/Books</Box>
           </Grid>
           <Grid
             item
@@ -69,8 +72,10 @@ const Books = ({ user, data }: { user: User; data: books[] }) => {
 
             {ablities.can("create", "Category") ? (
               <AdminBooksTable books={data} />
-            ) : (
+            ) : ablities.can("create", "Book") ? (
               <OwnersBooksTable data={data} />
+            ) : (
+              <UsersBooksTable data={data} />
             )}
           </Grid>
         </Grid>

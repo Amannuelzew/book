@@ -148,9 +148,9 @@ const Sidebar = ({ user }: { user: User }) => {
         </Link>
       </Can>
       {/*edit meeee lsit of Books */}
-      <Can I="read" a="/user/rent" ability={ability}>
+      <Can I="read" a="/user/rents" ability={ability}>
         <Link
-          href={"/user/rent"}
+          href={"/user/rents"}
           style={{ color: "white", textDecoration: "none" }}
         >
           <Box
@@ -160,11 +160,11 @@ const Sidebar = ({ user }: { user: User }) => {
               marginBottom: 2,
               gap: 2,
               alignItems: "center",
-              backgroundColor: "/user/rent" == path ? "#02AAFF" : "",
-              p: "/user/rent" == path ? 1 : 0,
-              borderRadius: "/user/rent" == path ? "10px" : "0px",
+              backgroundColor: "/user/rents" == path ? "#02AAFF" : "",
+              p: "/user/rents" == path ? 1 : 0,
+              borderRadius: "/user/rents" == path ? "10px" : "0px",
               "&:hover": {
-                color: "/user/rent" == path ? "" : "#02AAFF",
+                color: "/user/rents" == path ? "" : "#02AAFF",
                 cursor: "pointer",
               },
             }}

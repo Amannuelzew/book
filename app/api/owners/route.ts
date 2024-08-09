@@ -12,11 +12,10 @@ export const GET = async (request: NextRequest) => {
   const user = await getUserFromToken(token!);
   if (!user) return NextResponse.json({ error: "no" }, { status: 401 });
   const ability = defineAbilityFor(user);
-  console.log(user.id, "sas");
+
   const isallowd = ability.can("read", "Book", "");
   if (!isallowd)
     return NextResponse.json({ error: "you are not allowed" }, { status: 403 });
-  //console.log(data);
   const books = await db.book.findMany({
     where: accessibleBy(ability).Book,
   });

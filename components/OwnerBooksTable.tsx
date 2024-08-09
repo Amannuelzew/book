@@ -28,7 +28,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteBook, editBook } from "@/actions/owner";
 import { useFormState } from "react-dom";
 import Submit from "./Submit";
-import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 
 type books = {
@@ -306,8 +305,20 @@ const OwnersBooksTable = ({ data }: { data: books[] }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAlertClose}>Disagree</Button>
-          <Button onClick={(e) => handleDeletion(data[current].id)} autoFocus>
+          <Button variant="contained" onClick={handleAlertClose}>
+            Disagree
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#FA142B",
+              "&:hover": {
+                background: "red",
+              },
+            }}
+            onClick={(e) => handleDeletion(data[current].id)}
+            autoFocus
+          >
             Agree
           </Button>
         </DialogActions>

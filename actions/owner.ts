@@ -99,8 +99,7 @@ export const uploadBook = async (
   try {
     const file = await data.data.file.arrayBuffer();
     //upload file to storage server
-    /* console.log(data.data.file.name);
-    await fs.writeFile(
+    /* await fs.writeFile(
       `${process.cwd()}/temp/${data.data.file.name}`,
       Buffer.from(file)
     ); */
