@@ -5,9 +5,9 @@ import { User, Category } from "@prisma/client";
 import { redirect } from "next/navigation";
 import Graph from "./Graph";
 import Pie from "./Pie";
-import { formatDate } from "@/utils/formatters";
 import AdminDashboardBooksTable from "./AdminDashboardBooksTable";
 import OwnerDashboardBooksTable from "./OwnerDashboardBooksTable";
+import DateComponent from "./DateComponent";
 type dataProps = {
   label: string;
   value: number;
@@ -85,7 +85,7 @@ const Dashboard = ({
               <Typography sx={{ mt: 1 }} fontSize={16} fontWeight={600}>
                 This Month Statistics
               </Typography>
-              <Typography fontSize={13}>{formatDate(new Date())}</Typography>
+              <DateComponent />
               {/* revenue card */}
               <Card sx={{ p: 2, my: 2 }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -95,13 +95,13 @@ const Dashboard = ({
                 <hr />
                 <Typography fontSize={30} fontWeight={"bold"} sx={{ my: 2 }}>
                   ETB {revenue.toFixed(2)}
-                  <sub style={{ color: "red", fontSize: "15px" }}>1.5%</sub>
+                  <sub style={{ color: "red", fontSize: "15px" }}>0%</sub>
                 </Typography>
                 <Typography fontSize={13}>
-                  Compared to ETB70.00 last month
+                  Compared to ETB 0.00 last month
                 </Typography>
                 <Typography sx={{ mt: 1 }} fontSize={13} fontWeight={600}>
-                  Last Month Income ETB 24532.00
+                  Last Month Income ETB 0.00
                 </Typography>
               </Card>
               {/* pie card */}

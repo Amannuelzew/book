@@ -34,10 +34,12 @@ const Sidebar = ({ user }: { user: User }) => {
       sx={{
         backgroundColor: "#171B36",
         p: 2,
+        mx: 0.5,
         my: 1,
         color: "white",
         borderRadius: "10px",
-        height: "933px",
+        minHeight: "100vh",
+        height: "96%",
       }}
     >
       <Box
