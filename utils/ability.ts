@@ -31,12 +31,14 @@ export function routedefineAbilityFor(user: User) {
     can("read", "/dashboard");
   }
   if (user.role === "USER") {
-    can("read", "/user/books");
+    can("read", "/books");
+    can("read", "/user/rent");
   }
 
   return build();
 }
-export function defineAbilityFor(user: User) {
+//{books: {  some: {  ownerId: { equals: ""}}}}
+export function defineAbilityFor(user: User, id?: string) {
   const { can, cannot, build } = new AbilityBuilder<AppAbility>(
     createPrismaAbility
   );
@@ -49,9 +51,13 @@ export function defineAbilityFor(user: User) {
   } else if (user.role === ROLES.owner) {
     can("read", "Book", { owner: { userId: { equals: user.id } } });
     can("manage", "Owner", { userId: { equals: user.id } });
-    can("read", "Category");
+    can("read", "Category", { books: { some: { ownerId: id } } });
   } else {
-    can("read", "Book", { approved: true, owner: { approved: true } });
+    can("read", "Book", {
+      approved: true,
+      owner: { approved: true },
+      available: true,
+    });
     can("update", "Book");
   }
 

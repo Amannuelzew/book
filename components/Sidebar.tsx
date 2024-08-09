@@ -148,9 +148,9 @@ const Sidebar = ({ user }: { user: User }) => {
         </Link>
       </Can>
       {/*edit meeee lsit of Books */}
-      <Can I="read" a="/user/books" ability={ability}>
+      <Can I="read" a="/user/rent" ability={ability}>
         <Link
-          href={"/user/books"}
+          href={"/user/rent"}
           style={{ color: "white", textDecoration: "none" }}
         >
           <Box
@@ -160,17 +160,17 @@ const Sidebar = ({ user }: { user: User }) => {
               marginBottom: 2,
               gap: 2,
               alignItems: "center",
-              backgroundColor: "/user/books" == path ? "#02AAFF" : "",
-              p: "/user/books" == path ? 1 : 0,
-              borderRadius: "/user/books" == path ? "10px" : "0px",
+              backgroundColor: "/user/rent" == path ? "#02AAFF" : "",
+              p: "/user/rent" == path ? 1 : 0,
+              borderRadius: "/user/rent" == path ? "10px" : "0px",
               "&:hover": {
-                color: "/user/books" == path ? "" : "#02AAFF",
+                color: "/user/rent" == path ? "" : "#02AAFF",
                 cursor: "pointer",
               },
             }}
           >
             <FilterNoneIcon sx={{ fontSize: 30 }} />
-            <Typography>Books</Typography>
+            <Typography>Rents</Typography>
           </Box>
         </Link>
       </Can>

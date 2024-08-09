@@ -1,10 +1,10 @@
 "use server";
-import { ROLES } from "@/utils/constants";
 import db from "@/utils/db";
 import { promises as fs } from "fs";
 import { getCurrentUser } from "@/utils/user";
 import { redirect } from "next/navigation";
 import z from "zod";
+import { revalidatePath } from "next/cache";
 
 const getOwnerId = async () => {
   const user = await getCurrentUser();
@@ -26,8 +26,24 @@ type bookFormState = {
   } | null;
   message?: string | null;
 };
-
-const bookSchema = z.object({
+type editbookFormState = {
+  error?: {
+    title?: string[] | undefined;
+    author?: string[] | undefined;
+    quantity?: string[] | undefined;
+    price?: string[] | undefined;
+    category?: string[] | undefined;
+    file?: string[] | undefined;
+  } | null;
+  message?: string | null;
+};
+type deletebookFormState = {
+  error?: {
+    currentPath?: string[] | undefined;
+  } | null;
+  message?: string | null;
+};
+const createBookSchema = z.object({
   title: z.string().min(1, { message: "This field has to be filled." }),
   author: z.string().min(1, { message: "This field has to be filled." }),
   quantity: z.coerce
@@ -50,12 +66,26 @@ const bookSchema = z.object({
       "make sure you upload a file and only pdf format is supported."
     ),
 });
+const editBookSchema = z.object({
+  title: z.string(),
+  author: z.string(),
+  quantity: z.coerce.number().int().positive(),
+
+  price: z.coerce.number().positive(),
+  category: z.string().min(1, {
+    message: "This field has to be filled.",
+  }),
+  currentPath: z.string(),
+});
+const deleteBookSchema = z.object({
+  currentPath: z.string(),
+});
 
 export const uploadBook = async (
   prevState: bookFormState,
   formData: FormData
 ): Promise<bookFormState> => {
-  const data = bookSchema.safeParse({
+  const data = createBookSchema.safeParse({
     title: formData.get("title"),
     author: formData.get("author"),
     quantity: formData.get("quantity"),
@@ -88,8 +118,57 @@ export const uploadBook = async (
     });
   } catch (e) {
     console.error(e);
-    return { message: "Database Error:Failed to Sign you up." };
+    return { message: "Database Error:Failed to create a book." };
   }
 
   redirect("/dashboard");
+};
+export const editBook = async (
+  id: string,
+  prevState: editbookFormState,
+  formData: FormData
+): Promise<editbookFormState> => {
+  const data = editBookSchema.safeParse({
+    title: formData.get("title"),
+    author: formData.get("author"),
+    quantity: formData.get("quantity"),
+    price: formData.get("price"),
+    category: formData.get("category"),
+    currentPath: formData.get("currentPath"),
+  });
+
+  if (!data.success) return { error: data.error.flatten().fieldErrors };
+
+  try {
+    await db.book.update({
+      where: { id },
+      data: {
+        title: data.data.title,
+        author: data.data.author,
+        quantity: data.data.quantity,
+        price: data.data.price,
+        categoryId: data.data.category,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    return { message: "Database Error:Failed to edit a book." };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/books");
+  redirect(data.data.currentPath);
+};
+
+export const deleteBook = async (id: string) => {
+  try {
+    await db.book.delete({
+      where: { id },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/books");
 };

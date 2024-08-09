@@ -19,35 +19,28 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Box } from "@mui/material";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useFormState } from "react-dom";
 import { uploadBook } from "@/actions/owner";
 type categories = {
   name: string;
   id: string;
 }[];
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-  name: "file",
-});
 
 const UploadForm = ({ categories }: { categories: categories }) => {
   const [state, action] = useFormState(uploadBook, {
     error: null,
     message: null,
   });
+  const [file, setFile] = useState("");
   const [category, setCategory] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
+  };
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    if (event.target.files.length > 0) setFile(event.target.files[0].name);
   };
   return (
     <Box
@@ -136,9 +129,18 @@ const UploadForm = ({ categories }: { categories: categories }) => {
               startIcon={<CloudUploadIcon />}
             >
               Upload file
-              <input type="file" accept="application/pdf" name="file" hidden />
+              <input
+                type="file"
+                accept="application/pdf"
+                name="file"
+                hidden
+                onChange={handleFileChange}
+              />
             </Button>
             <Submit label="Submit" />
+            <Typography sx={{ fontSize: "12" }}>
+              {file ? `(${file})` : ""}
+            </Typography>
             <Typography sx={{ color: "red", fontSize: "12" }}>
               {state?.error?.file && state?.error?.file}
             </Typography>

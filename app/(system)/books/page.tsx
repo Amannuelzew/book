@@ -10,6 +10,7 @@ const getBooks = async (user: User) => {
   const books = await db.book.findMany({
     where: accessibleBy(ability).Book,
     include: { category: true, owner: true },
+    orderBy: { createdAt: "desc" },
   });
   return books;
 };

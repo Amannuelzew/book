@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/utils/user";
 const getCategories = async (user: User) => {
   const ability = defineAbilityFor(user!);
   const categories = await db.category.findMany({
-    where: accessibleBy(ability).Category,
+    //where: accessibleBy(ability).Category,
     select: { name: true, id: true },
     orderBy: { createdAt: "desc" },
   });

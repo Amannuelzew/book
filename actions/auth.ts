@@ -1,6 +1,8 @@
 "use server";
+import { routedefineAbilityFor } from "@/utils/ability";
 import { signin, signup } from "@/utils/authTool";
 import { COOKIE_NAME, ROLES } from "@/utils/constants";
+import { User } from "@prisma/client";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -69,25 +71,30 @@ export const registerUser = async (
     terms: formData.get("terms"),
     role: formData.get("role"),
   });
-
+  let ability = null;
   if (!data.success) return { error: data.error.flatten().fieldErrors };
   data.data.role ? (data.data.role = ROLES.owner) : null;
 
   try {
-    const { token } = await signup(data.data);
+    const { token, user } = await signup(data.data);
+    ability = routedefineAbilityFor(user! as User);
     cookies().set(COOKIE_NAME, token);
   } catch (e) {
     console.error(e);
     return { message: "Database Error:Failed to Sign you up." };
   }
-  //since this component is a server side component cant access abilityfor
-  return data.data.role ? redirect("/dashboard") : redirect("/user/books");
+  /* //since this component is a server side component cant access abilityfor
+  return data.data.role ? redirect("/dashboard") : redirect("/user/books"); */
+
+  return ability.can("read", "/dashboard")
+    ? redirect("/dashboard")
+    : redirect("/books");
 };
 export const signinUser = async (
   prevState: SigninFormState,
   formData: FormData
 ): Promise<SigninFormState> => {
-  let currentUser = null;
+  let ability = null;
   const data = siginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -97,15 +104,15 @@ export const signinUser = async (
   if (!data.success) return { error: data.error.flatten().fieldErrors };
   try {
     const { token, user } = await signin(data.data);
-    currentUser = user;
+    ability = routedefineAbilityFor(user! as User);
     //remember me with longer cookie storage time
     cookies().set(COOKIE_NAME, token);
   } catch (e) {
     console.error(e);
     return { message: "Database Error:Failed to Sign you in." };
   }
-  //since this component is a server side component cant access abilityfor
-  return currentUser.role === "USER"
-    ? redirect("/user/books")
-    : redirect("/dashboard");
+
+  return ability.can("read", "/dashboard")
+    ? redirect("/dashboard")
+    : redirect("/books");
 };
