@@ -69,10 +69,16 @@ const categories = [
     name: "Fiction",
   },
 ];
-const UsersBooksTable = ({ data }: { data: books[] }) => {
+const UsersBooksTable = ({
+  data,
+  userId,
+}: {
+  data: books[];
+  userId: string;
+}) => {
   const [pending, startTransition] = useTransition();
-  const handleRent = (id: string, ownerId: string) => {
-    startTransition(() => rentBook(id, ownerId));
+  const handleRent = (id: string, ownerId: string, userId: string) => {
+    startTransition(() => rentBook(id, ownerId, userId));
   };
   const columns = useMemo<MRT_ColumnDef<books>[]>(
     () => [
@@ -125,7 +131,9 @@ const UsersBooksTable = ({ data }: { data: books[] }) => {
         Cell: ({ cell, row }) => (
           <Button
             variant="contained"
-            onClick={() => handleRent(row.original.id, row.original.owner.id)}
+            onClick={() =>
+              handleRent(row.original.id, row.original.owner.id, userId)
+            }
           >
             Rent
           </Button>

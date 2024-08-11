@@ -9,6 +9,7 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -144,15 +145,15 @@ const Sidebar = ({ user }: { user: User }) => {
               },
             }}
           >
-            <FilterNoneIcon sx={{ fontSize: 30 }} />
+            <AddBoxOutlinedIcon sx={{ fontSize: 30 }} />
             <Typography>Book Upload</Typography>
           </Box>
         </Link>
       </Can>
-      {/*edit meeee lsit of Books */}
-      <Can I="read" a="/user/rents" ability={ability}>
+      {/* lsit of rented books */}
+      <Can I="read" a="/user/rented" ability={ability}>
         <Link
-          href={"/user/rents"}
+          href={"/user/rented"}
           style={{ color: "white", textDecoration: "none" }}
         >
           <Box
@@ -162,17 +163,17 @@ const Sidebar = ({ user }: { user: User }) => {
               marginBottom: 2,
               gap: 2,
               alignItems: "center",
-              backgroundColor: "/user/rents" == path ? "#02AAFF" : "",
-              p: "/user/rents" == path ? 1 : 0,
-              borderRadius: "/user/rents" == path ? "10px" : "0px",
+              backgroundColor: "/user/rented" == path ? "#02AAFF" : "",
+              p: "/user/rented" == path ? 1 : 0,
+              borderRadius: "/user/rented" == path ? "10px" : "0px",
               "&:hover": {
-                color: "/user/rents" == path ? "" : "#02AAFF",
+                color: "/user/rented" == path ? "" : "#02AAFF",
                 cursor: "pointer",
               },
             }}
           >
-            <FilterNoneIcon sx={{ fontSize: 30 }} />
-            <Typography>Rents</Typography>
+            <LibraryBooksOutlinedIcon sx={{ fontSize: 30 }} />
+            <Typography>Rented Books</Typography>
           </Box>
         </Link>
       </Can>

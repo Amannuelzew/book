@@ -75,7 +75,7 @@ const Books = ({ user, data }: { user: User; data: books[] }) => {
             ) : ablities.can("create", "Book") ? (
               <OwnersBooksTable data={data} />
             ) : (
-              <UsersBooksTable data={data} />
+              <UsersBooksTable data={data} userId={user.id} />
             )}
           </Grid>
         </Grid>

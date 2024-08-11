@@ -1,22 +1,48 @@
+"use server";
 import db from "@/utils/db";
+import { revalidatePath } from "next/cache";
 
-export const rentBook = async (id: string, ownerId: string) => {
+export const rentBook = async (id: string, ownerId: string, userId: string) => {
   const book = await db.book.findUnique({ where: { id } });
-  //change availablity status and deduct 1 from quantity
+  // deduct 1 from quantity
   await db.book.update({
     where: { id },
     data: {
-      available: !book?.available,
       quantity: book?.quantity! - 1,
     },
   });
+  //change availablity status
+  const b = await db.book.findUnique({ where: { id } });
+  if (b!.quantity <= 0) {
+    await db.book.update({
+      where: { id },
+      data: {
+        available: false,
+      },
+    });
+  }
   //imburse owner
   const owner = await db.owner.findUnique({ where: { id: ownerId } });
   await db.user.update({
     where: { id: owner?.userId },
     data: {
-      wallet: book?.price,
+      wallet: { increment: book?.price },
     },
   });
-  //add to rents table
+  //add to rents tables
+  await db.rental.upsert({
+    where: { userId: userId },
+    update: {
+      books: {
+        connect: { id },
+      },
+    },
+    create: {
+      userId: userId,
+      books: {
+        connect: { id },
+      },
+    },
+  });
+  revalidatePath("/books");
 };
