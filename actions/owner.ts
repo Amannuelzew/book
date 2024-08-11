@@ -213,7 +213,6 @@ export const deleteBook = async (id: string) => {
 //server side filtering
 export const globalBookfilter = async (query: string) => {
   const books = await getbooks(); //better to call this once
-  console.log("globb");
   const filter = books.filter(
     (book) =>
       book.category.name.toLowerCase().includes(query) ||

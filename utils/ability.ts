@@ -30,6 +30,7 @@ export function routedefineAbilityFor(user: User) {
     can("read", "/books");
     can("read", "/upload");
     can("read", "/dashboard");
+    can("read", "/upload");
   }
   if (user.role === "USER") {
     can("read", "/books");

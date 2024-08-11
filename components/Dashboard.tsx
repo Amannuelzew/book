@@ -196,7 +196,7 @@ const Dashboard = ({
           </Grid>
         </Grid>
       ) : (
-        redirect("/user/books")
+        redirect("/books")
       )}
     </>
   );

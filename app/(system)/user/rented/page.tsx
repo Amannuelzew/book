@@ -1,10 +1,11 @@
-import { defineAbilityFor } from "@/utils/ability";
+import { defineAbilityFor, routedefineAbilityFor } from "@/utils/ability";
 import { getCurrentUser } from "@/utils/user";
 import { accessibleBy } from "@casl/prisma";
 import { User } from "@prisma/client";
 import db from "@/utils/db";
 import UsersRentsTable from "@/components/UserRentsTable";
 import { Box } from "@mui/material";
+import { redirect } from "next/navigation";
 const getRents = async (user: User) => {
   const ability = defineAbilityFor(user!);
   const rental = await db.rental.findMany({
@@ -17,10 +18,17 @@ const getRents = async (user: User) => {
 const UserBooksPage = async () => {
   const user = await getCurrentUser();
   const rental = await getRents(user!);
+  const ability = routedefineAbilityFor(user!);
   return (
-    <Box sx={{ mt: 2 }}>
-      <UsersRentsTable data={rental} />
-    </Box>
+    <>
+      {ability.can("read", "/user/rented") ? (
+        <Box sx={{ mt: 2 }}>
+          <UsersRentsTable data={rental} />
+        </Box>
+      ) : (
+        redirect("/dashboard")
+      )}
+    </>
   );
 };
 

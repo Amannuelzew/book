@@ -3,9 +3,12 @@ import { routedefineAbilityFor } from "@/utils/ability";
 import { Grid, Typography, Box } from "@mui/material";
 import { User } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { ROLES } from "@/utils/constants";
 import OwnersTable from "./OwnersTable";
 type owners = {
+  user: {
+    email: string;
+    phoneNumber: string;
+  };
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -54,10 +57,10 @@ const Owners = ({ user, owners }: { user: User; owners: owners[] }) => {
             <OwnersTable data={owners} />
           </Grid>
         </Grid>
-      ) : user.role == ROLES.owner ? (
+      ) : ability.can("read", "/dashboard") ? (
         redirect("/dashboard")
       ) : (
-        redirect("/user/books")
+        redirect("/books")
       )}
     </>
   );

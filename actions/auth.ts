@@ -31,14 +31,27 @@ type SigninFormState = {
 
 const sigupSchema = z
   .object({
-    email: z
+    email: z.string().email("This is not a valid email."),
+    password: z
       .string()
-      .min(1, { message: "This field has to be filled." })
-      .email("This is not a valid email."),
-    password: z.string().min(1, { message: "This field has to be filled." }),
+      .min(8, { message: "Password must be at least 8 characters long." })
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+        {
+          message:
+            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        }
+      ),
     confirmPassword: z
       .string()
-      .min(1, { message: "This field has to be filled." }),
+      .min(8, { message: "Password must be at least 8 characters long." })
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+        {
+          message:
+            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+        }
+      ),
     location: z.string().min(1, { message: "This field has to be filled." }),
     phoneNumber: z.string().min(1, { message: "This field has to be filled." }),
     terms: z.string({ message: "You must agree to Terms and Conditions." }),
@@ -83,8 +96,6 @@ export const registerUser = async (
     console.error(e);
     return { message: "Database Error:Failed to Sign you up." };
   }
-  /* //since this component is a server side component cant access abilityfor
-  return data.data.role ? redirect("/dashboard") : redirect("/user/books"); */
 
   return ability.can("read", "/dashboard")
     ? redirect("/dashboard")
