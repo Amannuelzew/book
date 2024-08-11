@@ -25,7 +25,12 @@ import {
 } from "material-react-table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteBook, editBook } from "@/actions/owner";
+import {
+  bookFilterByColumns,
+  deleteBook,
+  editBook,
+  globalBookfilter,
+} from "@/actions/owner";
 import { useFormState } from "react-dom";
 import Submit from "./Submit";
 import { usePathname } from "next/navigation";
@@ -74,18 +79,25 @@ const categories = [
     name: "Fiction",
   },
 ];
-const OwnersBooksTable = ({ data }: { data: books[] }) => {
+const OwnersBooksTable = ({ books }: { books: books[] }) => {
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [approve, setApprove] = useState<{ id: string; value: boolean }>();
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+    []
+  );
+  const [data, setData] = useState<books[]>(books);
+  const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
 
   const handleClose = () => setOpen(false);
-  const editBookWithId = editBook.bind(null, data[current].id);
+  const editBookWithId = editBook.bind(null, books[current].id);
   const [title, setTitle] = useState(data[current].title);
   const [author, setAuthor] = useState(data[current].author);
   const [quantity, setQantity] = useState(data[current].quantity.toString());
   const [price, setPrice] = useState(data[current].price.toString());
   const [category, setCategory] = useState("");
-  const [pending, startTransition] = useTransition();
+
   const handleOpen = (id: string) => {
     setOpen(true);
     setCurrent(parseInt(id));
@@ -119,6 +131,28 @@ const OwnersBooksTable = ({ data }: { data: books[] }) => {
     setPrice(data[current].price.toString());
     setCategory(data[current].categoryId);
   }, [current]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setData(await globalBookfilter(globalFilter));
+
+      if (columnFilters.length)
+        setData(
+          await bookFilterByColumns(
+            columnFilters as [
+              {
+                id: string;
+                value: string;
+              }
+            ]
+          )
+        );
+    };
+    fetchData();
+  }, [globalFilter, columnFilters]);
+  function handleSearch(term: string) {
+    setGlobalFilter(term === undefined ? "" : term);
+  }
   const columns = useMemo<MRT_ColumnDef<books>[]>(
     () => [
       {
@@ -140,7 +174,6 @@ const OwnersBooksTable = ({ data }: { data: books[] }) => {
         header: "Book Name",
         size: 150,
         enableSorting: false,
-        enableColumnFilter: false,
         enableColumnActions: false,
       },
       {
@@ -207,6 +240,11 @@ const OwnersBooksTable = ({ data }: { data: books[] }) => {
     columns,
     data,
     enableRowNumbers: true,
+    manualFiltering: true,
+    //initialState: { showColumnFilters: true },
+    onGlobalFilterChange: handleSearch,
+    onColumnFiltersChange: setColumnFilters,
+    state: { globalFilter, columnFilters },
   });
 
   return (

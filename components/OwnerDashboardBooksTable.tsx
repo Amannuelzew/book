@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import {
   MaterialReactTable,
+  MRT_ColumnFiltersState,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
@@ -25,7 +26,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { deleteBook, editBook } from "@/actions/owner";
+import {
+  deleteBook,
+  editBook,
+  bookFilterByColumns,
+  globalBookfilter,
+} from "@/actions/owner";
 import { useFormState } from "react-dom";
 import Submit from "./Submit";
 import { usePathname } from "next/navigation";
@@ -67,7 +73,13 @@ const categories = [
     name: "Fiction",
   },
 ];
-const OwnerDashboardBooksTable = ({ data }: { data: books[] }) => {
+const OwnerDashboardBooksTable = ({ books }: { books: books[] }) => {
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [approve, setApprove] = useState<{ id: string; value: boolean }>();
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+    []
+  );
+  const [data, setData] = useState<books[]>(books);
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
 
@@ -112,6 +124,28 @@ const OwnerDashboardBooksTable = ({ data }: { data: books[] }) => {
     setPrice(data[current].price.toString());
     setCategory(data[current].categoryId);
   }, [current]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setData(await globalBookfilter(globalFilter));
+
+      if (columnFilters.length)
+        setData(
+          await bookFilterByColumns(
+            columnFilters as [
+              {
+                id: string;
+                value: string;
+              }
+            ]
+          )
+        );
+    };
+    fetchData();
+  }, [globalFilter, columnFilters]);
+  function handleSearch(term: string) {
+    setGlobalFilter(term === undefined ? "" : term);
+  }
   const columns = useMemo<MRT_ColumnDef<books>[]>(
     () => [
       {
@@ -119,7 +153,6 @@ const OwnerDashboardBooksTable = ({ data }: { data: books[] }) => {
         header: "Book Name",
         size: 150,
         enableSorting: false,
-        enableColumnFilter: false,
         enableColumnActions: false,
       },
       {
@@ -186,6 +219,11 @@ const OwnerDashboardBooksTable = ({ data }: { data: books[] }) => {
     columns,
     data,
     enableRowNumbers: true,
+    manualFiltering: true,
+    //initialState: { showColumnFilters: true },
+    onGlobalFilterChange: handleSearch,
+    onColumnFiltersChange: setColumnFilters,
+    state: { globalFilter, columnFilters },
   });
 
   return (

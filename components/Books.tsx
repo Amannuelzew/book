@@ -73,7 +73,7 @@ const Books = ({ user, data }: { user: User; data: books[] }) => {
             {ablities.can("create", "Category") ? (
               <AdminBooksTable books={data} />
             ) : ablities.can("create", "Book") ? (
-              <OwnersBooksTable data={data} />
+              <OwnersBooksTable books={data} />
             ) : (
               <UsersBooksTable data={data} userId={user.id} />
             )}

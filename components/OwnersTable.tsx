@@ -57,22 +57,34 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
         accessorKey: "name",
         header: "owner",
         size: 150,
+        enableSorting: false,
+        enableColumnFilter: false,
+        enableColumnActions: false,
       },
       {
         accessorKey: "_count.books",
         header: "Upload",
         size: 150,
         Cell: ({ cell }) => <span>{cell.getValue<string>()} Books</span>,
+        enableSorting: false,
+        enableColumnFilter: false,
+        enableColumnActions: false,
       },
       {
         accessorKey: "location",
         header: "Location",
         size: 150,
+        enableSorting: false,
+        enableColumnFilter: false,
+        enableColumnActions: false,
       },
       {
         accessorKey: "disabled",
         header: "Status",
         size: 150,
+        enableSorting: false,
+        enableColumnFilter: false,
+        enableColumnActions: false,
         Cell: ({ cell, row }) => (
           <GreenSwitch
             checked={row.original.disabled ? false : true}
@@ -84,9 +96,9 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
         accessorKey: "Action",
         header: "Action",
         size: 150,
-        enableSorting: false, //disable sorting on this column
+        enableSorting: false,
         enableColumnFilter: false,
-
+        enableColumnActions: false,
         Cell: ({ cell, row }) => (
           <Box>
             <Box sx={{ display: "flex", gap: 2, cursor: "pointer" }}>
@@ -135,7 +147,7 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
 
   const table = useMaterialReactTable({
     columns,
-    data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data,
     enableRowNumbers: true,
   });
 

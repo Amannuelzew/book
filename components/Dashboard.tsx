@@ -183,9 +183,9 @@ const Dashboard = ({
                   Live Book Status
                 </Typography>
                 {ablities.can("create", "Category") ? (
-                  <AdminDashboardBooksTable data={books} />
+                  <AdminDashboardBooksTable books={books} />
                 ) : (
-                  <OwnerDashboardBooksTable data={books} />
+                  <OwnerDashboardBooksTable books={books} />
                 )}
               </Grid>
               {/* graph row */}

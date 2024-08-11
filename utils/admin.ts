@@ -12,6 +12,7 @@ type books = {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+
     location: string;
     approved: boolean;
     disabled: boolean;
@@ -24,6 +25,7 @@ type books = {
   title: string;
   approved: boolean;
   quantity: number;
+  available: boolean;
   price: number;
   url: string;
   categoryId: string;
@@ -31,6 +33,7 @@ type books = {
 };
 const getbooks = async () => {
   //books are filterd based casl access control defn
+  //this mehod must be wrapped with cache() since server side filtering calls it in every keystroke
   const user = await getCurrentUser();
   const ability = defineAbilityFor(user!);
   const books = await db.book.findMany({
@@ -85,38 +88,45 @@ export const approveBook = async (id: string) => {
 
 //server side filtering
 export const globalBookfilter = async (query: string) => {
-  const books = await getbooks();
+  const books = await getbooks(); //better to call this once
   const filter = books.filter(
     (book) =>
-      book.owner.name.toLowerCase().startsWith(query) ||
-      book.category.name.toLowerCase().startsWith(query) ||
-      book.owner.location.toLowerCase().startsWith(query) ||
-      book.author.toLowerCase().startsWith(query)
+      book.owner.name.toLowerCase().includes(query) ||
+      book.category.name.toLowerCase().includes(query) ||
+      book.owner.location.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query) ||
+      book.title.toLowerCase().includes(query)
   );
   return filter;
 };
 export const bookFilterByColumns = async (
   query: [{ id: string; value: string }]
 ) => {
-  const books = await getbooks();
+  const books = await getbooks(); //better to call this once
   let list: books[] = [];
   for (let i = 0; i < query.length; i++) {
-    if (query[i].id == "author")
+    if (query[i].id == "author") {
       list = books.filter((book) =>
-        book.author.toLowerCase().startsWith(query[i].value)
+        book.author.toLowerCase().includes(query[i].value)
       );
-    if (query[i].id == "owner.name")
+    }
+    if (query[i].id == "owner.name") {
       list = books.filter((book) =>
-        book.owner.name.toLowerCase().startsWith(query[i].value)
+        book.owner.name.toLowerCase().includes(query[i].value)
       );
-    else if (query[i].id == "owner.location")
-      list = list.filter((book) =>
-        book.owner.location.toLowerCase().startsWith(query[i].value)
+    } else if (query[i].id == "owner.location") {
+      list = books.filter((book) =>
+        book.owner.location.toLowerCase().includes(query[i].value)
       );
-    else if (query[i].id == "category.name")
-      list = list.filter((book) =>
-        book.category.name.toLowerCase().startsWith(query[i].value)
+    } else if (query[i].id == "category.name") {
+      list = books.filter((book) =>
+        book.category.name.toLowerCase().includes(query[i].value)
       );
+    } else if (query[i].id == "title") {
+      list = books.filter((book) =>
+        book.title.toLowerCase().includes(query[i].value)
+      );
+    }
   }
   return list;
 };

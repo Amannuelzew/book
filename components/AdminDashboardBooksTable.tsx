@@ -1,11 +1,13 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   MaterialReactTable,
+  MRT_ColumnFiltersState,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
 import { Box, Typography } from "@mui/material";
+import { bookFilterByColumns, globalBookfilter } from "@/utils/admin";
 type books = {
   owner: {
     id: string;
@@ -30,7 +32,34 @@ type books = {
   categoryId: string;
   ownerId: string;
 };
-const AdminDashboardBooksTable = ({ data }: { data: books[] }) => {
+const AdminDashboardBooksTable = ({ books }: { books: books[] }) => {
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [approve, setApprove] = useState<{ id: string; value: boolean }>();
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+    []
+  );
+  const [data, setData] = useState<books[]>(books);
+  useEffect(() => {
+    const fetchData = async () => {
+      setData(await globalBookfilter(globalFilter));
+
+      if (columnFilters.length)
+        setData(
+          await bookFilterByColumns(
+            columnFilters as [
+              {
+                id: string;
+                value: string;
+              }
+            ]
+          )
+        );
+    };
+    fetchData();
+  }, [globalFilter, columnFilters]);
+  function handleSearch(term: string) {
+    setGlobalFilter(term === undefined ? "" : term);
+  }
   const columns = useMemo<MRT_ColumnDef<books>[]>(
     () => [
       {
@@ -38,7 +67,6 @@ const AdminDashboardBooksTable = ({ data }: { data: books[] }) => {
         header: "owner",
         size: 150,
         enableSorting: false,
-        enableColumnFilter: false,
         enableColumnActions: false,
       },
       {
@@ -46,7 +74,6 @@ const AdminDashboardBooksTable = ({ data }: { data: books[] }) => {
         header: "Title",
         size: 150,
         enableSorting: false,
-        enableColumnFilter: false,
         enableColumnActions: false,
       },
       {
@@ -100,6 +127,10 @@ const AdminDashboardBooksTable = ({ data }: { data: books[] }) => {
     columns,
     data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
     enableRowNumbers: true,
+    manualFiltering: true,
+    onGlobalFilterChange: handleSearch,
+    onColumnFiltersChange: setColumnFilters,
+    state: { globalFilter, columnFilters },
   });
 
   return <MaterialReactTable table={table} />;

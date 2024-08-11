@@ -5,7 +5,45 @@ import { getCurrentUser } from "@/utils/user";
 import { redirect } from "next/navigation";
 import z from "zod";
 import { revalidatePath } from "next/cache";
+import { defineAbilityFor } from "@/utils/ability";
+import { accessibleBy } from "@casl/prisma";
+type books = {
+  category: { id: string; createdAt: Date; updatedAt: Date; name: string };
+  owner: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
 
+    location: string;
+    approved: boolean;
+    disabled: boolean;
+    userId: string;
+  };
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  author: string;
+  title: string;
+  approved: boolean;
+  quantity: number;
+  available: boolean;
+  price: number;
+  url: string;
+  categoryId: string;
+  ownerId: string;
+};
+const getbooks = async () => {
+  //books are filterd based casl access control defn
+  //this mehod must be wrapped with cache()
+  const user = await getCurrentUser();
+  const ability = defineAbilityFor(user!);
+  const books = await db.book.findMany({
+    where: accessibleBy(ability).Book,
+    include: { category: true, owner: true },
+  });
+  return books;
+};
 const getOwnerId = async () => {
   const user = await getCurrentUser();
   const userOwner = await db.user.findUnique({
@@ -170,4 +208,39 @@ export const deleteBook = async (id: string) => {
 
   revalidatePath("/dashboard");
   revalidatePath("/books");
+};
+
+//server side filtering
+export const globalBookfilter = async (query: string) => {
+  const books = await getbooks(); //better to call this once
+  console.log("globb");
+  const filter = books.filter(
+    (book) =>
+      book.category.name.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query) ||
+      book.title.toLowerCase().includes(query)
+  );
+  return filter;
+};
+export const bookFilterByColumns = async (
+  query: [{ id: string; value: string }]
+) => {
+  const books = await getbooks(); //better to call this once
+  let list: books[] = [];
+  for (let i = 0; i < query.length; i++) {
+    if (query[i].id == "author") {
+      list = books.filter((book) =>
+        book.author.toLowerCase().includes(query[i].value)
+      );
+    } else if (query[i].id == "category.name") {
+      list = books.filter((book) =>
+        book.category.name.toLowerCase().includes(query[i].value)
+      );
+    } else if (query[i].id == "title") {
+      list = books.filter((book) =>
+        book.title.toLowerCase().includes(query[i].value)
+      );
+    }
+  }
+  return list;
 };
