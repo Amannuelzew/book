@@ -17,30 +17,8 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({ error: "you are not allowed" }, { status: 403 });
   const books = await db.book.findMany({
     where: accessibleBy(ability).Book,
+    include: { category: true, owner: true },
   });
 
   return NextResponse.json({ data: books });
-};
-export const PATCH = async (request: NextRequest) => {
-  const data: { id: string } = await request.json();
-  const hascookie = request.cookies.has(COOKIE_NAME);
-  if (!hascookie) return NextResponse.json({ error: "no" }, { status: 401 });
-  const token = request.cookies.get(COOKIE_NAME);
-  const user = await getUserFromToken(token!);
-  if (!user) return NextResponse.json({ error: "no" }, { status: 401 });
-  const ability = defineAbilityFor(user);
-  const isallowd = ability.can("update", "Book");
-  if (!isallowd)
-    return NextResponse.json({ error: "you are not allowed" }, { status: 403 });
-  const book = await db.book.findUnique({ where: { id: data.id } });
-  const updatedbook = await db.book.update({
-    where: {
-      id: data.id!,
-    },
-    data: {
-      approved: !book!.approved,
-    },
-  });
-
-  return NextResponse.json({ data: updatedbook }, { status: 200 });
 };

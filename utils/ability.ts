@@ -1,5 +1,5 @@
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
-import { User, Book, Owner, Category } from "@prisma/client";
+import { User, Book, Owner, Category, Rental } from "@prisma/client";
 import { PureAbility } from "@casl/ability";
 import { createPrismaAbility, PrismaQuery, Subjects } from "@casl/prisma";
 import { ROLES } from "./constants";
@@ -12,6 +12,7 @@ type AppAbility = PureAbility<
       Book: Book;
       Owner: Owner;
       Category: Category;
+      Rental: Rental;
     }>
   ],
   PrismaQuery
@@ -63,6 +64,7 @@ export function defineAbilityFor(user: User, id?: string) {
       },
     });
     can("update", "Book");
+    can("manage", "Rental", { userId: { equals: user.id } });
   }
 
   return build();

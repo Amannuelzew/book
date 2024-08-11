@@ -149,6 +149,8 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
     columns,
     data,
     enableRowNumbers: true,
+    enableGlobalFilter: false,
+    enableColumnFilters: false,
   });
 
   return (
