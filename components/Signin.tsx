@@ -30,7 +30,6 @@ const Signin = () => {
         }}
       >
         <Box>
-          {" "}
           <AutoStoriesIcon sx={{ color: "#02AAFF", fontSize: 40 }} />
         </Box>
         <Typography variant="h5">Book Rent</Typography>
@@ -42,6 +41,7 @@ const Signin = () => {
       <form action={action}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <TextField
+            required
             error={state?.error?.email?.length !== undefined}
             id="email"
             type="email"
@@ -51,6 +51,7 @@ const Signin = () => {
             helperText={state?.error?.email && state?.error?.email}
           />
           <TextField
+            required
             error={state?.error?.password?.length !== undefined}
             id="password"
             type="password"
