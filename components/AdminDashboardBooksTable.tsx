@@ -94,15 +94,17 @@ const AdminDashboardBooksTable = ({ books }: { books: books[] }) => {
               >
                 <Box
                   sx={{
-                    backgroundColor: cell ? "#49CA3A" : "red",
+                    backgroundColor: row.original.available ? "#49CA3A" : "red",
                     width: 15,
                     height: 15,
                     borderRadius: 30,
                     border: 1,
-                    borderColor: cell ? "#49CAEE" : "red",
+                    borderColor: row.original.available ? "#49CAEE" : "red",
                   }}
                 ></Box>
-                <Typography>{cell ? "Available" : "Rented"}</Typography>
+                <Typography>
+                  {row.original.available ? "Available" : "Rented"}
+                </Typography>
               </Box>
             </Box>
             <div></div>
