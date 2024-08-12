@@ -14,6 +14,12 @@ const getBooks = async (user: User) => {
   });
   return books;
 };
+const getListOfCategories = async () => {
+  const categories = await db.category.findMany({
+    select: { id: true, name: true },
+  });
+  return categories;
+};
 const AdminBookspage = async () => {
   //incase query params needed to be handeled
   //const query = searchParams?.query || "";
@@ -21,7 +27,8 @@ const AdminBookspage = async () => {
 
   const user = await getCurrentUser();
   const books = await getBooks(user!);
-  return <Books user={user!} data={books} />;
+  const category = await getListOfCategories();
+  return <Books user={user!} data={books} categories={category} />;
 };
 
 export default AdminBookspage;

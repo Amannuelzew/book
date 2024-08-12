@@ -162,7 +162,7 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
         fullWidth
         sx={{ borderRadius: "5" }}
       >
-        <DialogTitle>Set backup account</DialogTitle>
+        <DialogTitle>preview owners</DialogTitle>
         <Box
           sx={{
             p: 5,
@@ -172,25 +172,25 @@ const OwnersTable = ({ data }: { data: owners[] }) => {
           }}
         >
           <TextField
-            value={data[current].name}
+            value={data.length ? data[current].name : ""}
             label="Name"
             disabled
             fullWidth
           />
           <TextField
-            value={data[current].user.email}
+            value={data.length ? data[current].user.email : ""}
             label="Email"
             disabled
             fullWidth
           />
           <TextField
-            value={data[current].location}
+            value={data.length ? data[current].location : ""}
             label="Location"
             disabled
             fullWidth
           />
           <TextField
-            value={data[current].user.phoneNumber}
+            value={data.length ? data[current].user.phoneNumber : ""}
             label="Phone Number"
             disabled
             fullWidth

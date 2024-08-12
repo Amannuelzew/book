@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import Sidebar from "@/components/Sidebar";
 import { getCurrentUser } from "@/utils/user";
 import { Box, Grid } from "@mui/material";
 
+export const metadata: Metadata = {
+  title: "Book Rent",
+  description: "Discover Your Next Adventures With Our Book Rentals!",
+};
 const AdminLayout = async ({
   children,
 }: Readonly<{

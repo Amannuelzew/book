@@ -4,7 +4,11 @@ import { formatDate } from "@/utils/formatters";
 import { Typography } from "@mui/material";
 
 const DateComponent = () => {
-  return <Typography fontSize={13}>{formatDate(new Date())}</Typography>;
+  return (
+    <p style={{ fontSize: "13px" }} suppressHydrationWarning>
+      {formatDate(new Date())}
+    </p>
+  );
 };
 
 export default DateComponent;

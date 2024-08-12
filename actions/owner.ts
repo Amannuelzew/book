@@ -192,7 +192,7 @@ export const editBook = async (
     return { message: "Database Error:Failed to edit a book." };
   }
 
-  revalidatePath("/dashboard");
+  //revalidatePath("/dashboard");
   revalidatePath("/books");
   redirect(data.data.currentPath);
 };

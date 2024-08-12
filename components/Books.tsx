@@ -36,7 +36,19 @@ type books = {
   categoryId: string;
   ownerId: string;
 };
-const Books = ({ user, data }: { user: User; data: books[] }) => {
+type categoryProps = {
+  id: string;
+  name: string;
+};
+const Books = ({
+  user,
+  data,
+  categories,
+}: {
+  user: User;
+  data: books[];
+  categories: categoryProps[];
+}) => {
   const ability = routedefineAbilityFor(user);
   const ablities = defineAbilityFor(user);
   return (
@@ -72,7 +84,7 @@ const Books = ({ user, data }: { user: User; data: books[] }) => {
           {ablities.can("create", "Category") ? (
             <AdminBooksTable books={data} />
           ) : ablities.can("create", "Book") ? (
-            <OwnersBooksTable books={data} />
+            <OwnersBooksTable books={data} categories={categories} />
           ) : (
             <UsersBooksTable data={data} userId={user.id} />
           )}

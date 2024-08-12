@@ -37,16 +37,22 @@ type booksProps = {
   categoryId: string;
   ownerId: string;
 };
+type categoryProps = {
+  id: string;
+  name: string;
+};
 const Dashboard = ({
   user,
   data,
   revenue,
   books,
+  flatCategories,
 }: {
   user: User;
   data: dataProps;
   revenue: number;
   books: booksProps[];
+  flatCategories: categoryProps[];
 }) => {
   //based on access control defined users of type role[ADMIN,OWNER] can only visit this page
   const ability = routedefineAbilityFor(user);
@@ -185,7 +191,10 @@ const Dashboard = ({
                 {ablities.can("create", "Category") ? (
                   <AdminDashboardBooksTable books={books} />
                 ) : (
-                  <OwnerDashboardBooksTable books={books} />
+                  <OwnerDashboardBooksTable
+                    books={books}
+                    categories={flatCategories}
+                  />
                 )}
               </Grid>
               {/* graph row */}

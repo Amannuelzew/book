@@ -17,6 +17,12 @@ const getCategories = async (user: User, ownerId: string) => {
   });
   return categories;
 };
+const getListOfCategories = async () => {
+  const categories = await db.category.findMany({
+    select: { id: true, name: true },
+  });
+  return categories;
+};
 const getOwners = async (user: User) => {
   const ability = defineAbilityFor(user!);
   const owners = await db.owner.findMany({
@@ -42,6 +48,7 @@ const Dashbordpage = async () => {
   const a = owners.filter((own) => own.userId === user!.id);
   const currentOwner = a ? a[0] : { name: "", id: "" };
   const categories = await getCategories(user!, currentOwner?.id);
+  const category = await getListOfCategories();
   const books = await getBooks(user!);
   //all books that belongs to this owner
   const ownerBooks = currentOwner
@@ -61,7 +68,16 @@ const Dashbordpage = async () => {
     color: colors[index],
   }));
   const revenue = owners.reduce((sum, rev) => sum + rev.user.wallet, 0);
-  return <Dashboard user={user!} data={data} revenue={revenue} books={books} />;
+
+  return (
+    <Dashboard
+      user={user!}
+      data={data}
+      revenue={revenue}
+      books={books}
+      flatCategories={category}
+    />
+  );
 };
 
 export default Dashbordpage;

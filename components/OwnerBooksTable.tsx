@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { FormEvent, useEffect, useMemo, useState, useTransition } from "react";
 import {
   Box,
   Button,
@@ -65,21 +65,17 @@ type books = {
   categoryId: string;
   ownerId: string;
 };
-const categories = [
-  {
-    id: "633d7516-30e6-404a-b24b-55261239c348",
-    name: "Self Help",
-  },
-  {
-    id: "bcc7ef79-89e9-4be2-bc9e-f04289707842",
-    name: "Business",
-  },
-  {
-    id: "e249fd39-702e-403c-ab53-addcf1268395",
-    name: "Fiction",
-  },
-];
-const OwnersBooksTable = ({ books }: { books: books[] }) => {
+type categoryProps = {
+  id: string;
+  name: string;
+};
+const OwnersBooksTable = ({
+  books,
+  categories,
+}: {
+  books: books[];
+  categories: categoryProps[];
+}) => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [approve, setApprove] = useState<{ id: string; value: boolean }>();
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -91,11 +87,14 @@ const OwnersBooksTable = ({ books }: { books: books[] }) => {
   const [current, setCurrent] = useState(0);
 
   const handleClose = () => setOpen(false);
-  const editBookWithId = editBook.bind(null, books[current].id);
-  const [title, setTitle] = useState(data[current].title);
-  const [author, setAuthor] = useState(data[current].author);
-  const [quantity, setQantity] = useState(data[current].quantity.toString());
-  const [price, setPrice] = useState(data[current].price.toString());
+  const editBookWithId = editBook.bind(
+    null,
+    books.length ? books[current].id : ""
+  );
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [quantity, setQantity] = useState("");
+  const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
 
   const handleOpen = (id: string) => {
@@ -119,17 +118,27 @@ const OwnersBooksTable = ({ books }: { books: books[] }) => {
     setAlertOpen(false);
   };
   const handleDeletion = (id: string) => {
+    setData(data.filter((_, i) => i !== current));
     startTransition(() => deleteBook(id));
     setAlertOpen(false);
+  };
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const newData: books = data[current];
+    newData.title = (event.target as any).title.value;
+    newData.author = (event.target as any).author.value;
+    newData.quantity = (event.target as any).quantity.value;
+    newData.price = (event.target as any).price.value;
+    newData.categoryId = (event.target as any).category.value;
+    setData(data.map((item, i) => (i == current ? newData : item)));
   };
   const currentPath = usePathname();
 
   useEffect(() => {
-    setTitle(data[current].title);
-    setAuthor(data[current].author);
-    setQantity(data[current].quantity.toString());
-    setPrice(data[current].price.toString());
-    setCategory(data[current].categoryId);
+    setTitle(data.length ? data[current].title : "");
+    setAuthor(data.length ? data[current].author : "");
+    setQantity(data.length ? data[current].quantity.toString() : "");
+    setPrice(data.length ? data[current].price.toString() : "");
+    setCategory(data.length ? data[current].categoryId : "");
   }, [current]);
 
   useEffect(() => {
@@ -256,7 +265,7 @@ const OwnersBooksTable = ({ books }: { books: books[] }) => {
         sx={{ borderRadius: "5" }}
       >
         <DialogTitle>Edit a Book</DialogTitle>
-        <form action={action}>
+        <form action={action} onSubmit={(event) => handleSubmit(event)}>
           <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 1 }}>
             <TextField
               id="title"
@@ -355,7 +364,6 @@ const OwnersBooksTable = ({ books }: { books: books[] }) => {
               },
             }}
             onClick={(e) => handleDeletion(data[current].id)}
-            autoFocus
           >
             Agree
           </Button>

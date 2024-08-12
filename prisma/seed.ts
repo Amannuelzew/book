@@ -1,5 +1,5 @@
-/* import { PrismaClient } from "@prisma/client";
-
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 const run = async () => {
   await Promise.all(
@@ -11,6 +11,18 @@ const run = async () => {
       });
     })
   );
+  const salt = bcrypt.genSaltSync();
+  const user = await prisma.user.upsert({
+    where: { email: "admin@admin.com" },
+    update: {},
+    create: {
+      email: "admin@admin.com",
+      password: bcrypt.hashSync("admin", salt),
+      location: "Addis Ababa",
+      phoneNumber: "0911221111",
+      role: "ADMIN",
+    },
+  });
 };
 
 run()
@@ -21,4 +33,3 @@ run()
   .finally(async () => {
     await prisma.$disconnect();
   });
- */

@@ -73,6 +73,9 @@ const Signin = () => {
             />
             <FormHelperText>{state?.error?.remember}</FormHelperText>
           </FormControl>
+          <Typography sx={{ color: "red", fontsize: "12.33px" }} align="center">
+            {state?.message}
+          </Typography>
           <Submit label="LOGIN" />
           <Typography align="center" sx={{ m: 2 }}>
             Have not an account? <Link href="/signup">Sign up</Link>

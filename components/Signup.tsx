@@ -125,7 +125,9 @@ const Signup = () => {
             />
             <FormHelperText>{state?.error?.role}</FormHelperText>
           </FormControl>
-
+          <Typography sx={{ color: "red", fontsize: "12.33px" }} align="center">
+            {state?.message}
+          </Typography>
           <Submit label="SIGN IN" />
           <Typography align="center">
             Already have an account <Link href="/signin">Login</Link>
