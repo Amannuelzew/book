@@ -12,12 +12,29 @@ const run = async () => {
     })
   );
   const salt = bcrypt.genSaltSync();
+  await Promise.all(
+    ["user@gmail.com", "user1@gmail.com", "user2@gmail.com"].map(
+      async (user) => {
+        return prisma.user.upsert({
+          where: { email: user },
+          update: {},
+          create: {
+            email: user,
+            password: bcrypt.hashSync("Aa!123456", salt),
+            location: "Addis Ababa",
+            phoneNumber: "0911221111",
+          },
+        });
+      }
+    )
+  );
+
   const admin = await prisma.user.upsert({
     where: { email: "admin@admin.com" },
     update: {},
     create: {
       email: "admin@admin.com",
-      password: bcrypt.hashSync("admin", salt),
+      password: bcrypt.hashSync("Aa!123456", salt),
       location: "Addis Ababa",
       phoneNumber: "0911221111",
       role: "ADMIN",
