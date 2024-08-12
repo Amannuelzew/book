@@ -33,7 +33,9 @@ export const signin = async ({
     where: { email },
   });
   if (!match) throw new Error("invalid user");
+  console.log("1", match);
   const correctpwd = await comparePassword(password, match.password);
+  console.log("2", comparePassword);
   if (!correctpwd) throw new Error("invalid user");
   const token = createToken(match.id);
   const { password: pw, ...user } = match;
