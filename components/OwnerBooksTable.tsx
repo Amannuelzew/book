@@ -84,9 +84,17 @@ const OwnersBooksTable = ({
   const [data, setData] = useState<books[]>(books);
   const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const [current, setCurrent] = useState(0);
 
+  const handleOpen = (id: string) => {
+    setOpen(true);
+    setCurrent(parseInt(id));
+  };
   const handleClose = () => setOpen(false);
+  const handleAlertClose = () => {
+    setAlertOpen((prev) => !prev);
+  };
   const editBookWithId = editBook.bind(
     null,
     books.length ? books[current].id : ""
@@ -97,10 +105,6 @@ const OwnersBooksTable = ({
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
 
-  const handleOpen = (id: string) => {
-    setOpen(true);
-    setCurrent(parseInt(id));
-  };
   const handleCategoryChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
   };
@@ -108,15 +112,7 @@ const OwnersBooksTable = ({
     error: null,
     message: null,
   });
-  const [alertOpen, setAlertOpen] = useState(false);
 
-  const handleAlertOpen = () => {
-    setAlertOpen(true);
-  };
-
-  const handleAlertClose = () => {
-    setAlertOpen(false);
-  };
   const handleDeletion = (id: string) => {
     setData(data.filter((_, i) => i !== current));
     startTransition(() => deleteBook(id));
@@ -130,6 +126,8 @@ const OwnersBooksTable = ({
     newData.price = (event.target as any).price.value;
     newData.categoryId = (event.target as any).category.value;
     setData(data.map((item, i) => (i == current ? newData : item)));
+    //this will not ensure data update, its like optimistic update
+    handleClose();
   };
   const currentPath = usePathname();
 
@@ -237,7 +235,7 @@ const OwnersBooksTable = ({
         Cell: ({ cell, row }) => (
           <Box sx={{ display: "flex", gap: 2, cursor: "pointer" }}>
             <EditIcon onClick={() => handleOpen(row.id)} />
-            <DeleteIcon color="error" onClick={handleAlertOpen} />
+            <DeleteIcon color="error" onClick={handleAlertClose} />
           </Box>
         ),
       },
@@ -338,7 +336,7 @@ const OwnersBooksTable = ({
       </Dialog>
       <Dialog
         open={alertOpen}
-        onClose={handleClose}
+        onClose={handleAlertClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

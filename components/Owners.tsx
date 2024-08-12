@@ -41,10 +41,12 @@ const Owners = ({ user, owners }: { user: User; owners: owners[] }) => {
             item
             sx={{ p: 2, borderRadius: "10px", backgroundColor: "white" }}
           >
-            <Box display={"inline"} fontWeight="bold">
-              Admin
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography fontSize={20} fontWeight={"bold"}>
+                Admin
+              </Typography>
+              <Typography>/Owners</Typography>
             </Box>
-            <Box display={"inline"}>/Owners</Box>
           </Grid>
           <Grid
             item

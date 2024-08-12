@@ -34,7 +34,6 @@ type books = {
 };
 const AdminDashboardBooksTable = ({ books }: { books: books[] }) => {
   const [globalFilter, setGlobalFilter] = useState("");
-  const [approve, setApprove] = useState<{ id: string; value: boolean }>();
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     []
   );

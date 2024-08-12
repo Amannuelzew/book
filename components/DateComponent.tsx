@@ -5,7 +5,10 @@ import { Typography } from "@mui/material";
 
 const DateComponent = () => {
   return (
-    <p style={{ fontSize: "13px" }} suppressHydrationWarning>
+    <p
+      style={{ fontSize: "15px", color: "gray" }}
+      suppressHydrationWarning={true}
+    >
       {formatDate(new Date())}
     </p>
   );
