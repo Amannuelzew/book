@@ -14,6 +14,7 @@ type owners = {
   updatedAt: Date;
   name: string;
   location: string;
+  image: string;
   approved: boolean;
   disabled: boolean;
   userId: string;

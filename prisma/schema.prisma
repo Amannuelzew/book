@@ -11,7 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  //directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -23,7 +23,7 @@ model User {
   password    String
   location    String
   phoneNumber String
-  image       String @default("")
+  image       String @default("/default.png")
   role        String @default("USER")
 
   wallet Float    @default(0)
@@ -38,6 +38,7 @@ model Owner {
 
   name     String
   location String
+  image    String @default("/default.png")
   approved Boolean @default(false)
   disabled Boolean @default(false)
   userId   String

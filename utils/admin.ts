@@ -11,9 +11,9 @@ type books = {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    name: string;
-
+    name: string
     location: string;
+    image:string;
     approved: boolean;
     disabled: boolean;
     userId: string;

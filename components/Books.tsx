@@ -18,6 +18,7 @@ type books = {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+    image:string;
     location: string;
     approved: boolean;
     disabled: boolean;

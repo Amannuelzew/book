@@ -8,6 +8,7 @@ import {
 } from "material-react-table";
 import { Box, Typography } from "@mui/material";
 import { bookFilterByColumns, globalBookfilter } from "@/utils/admin";
+import Image from "next/image";
 type books = {
   owner: {
     id: string;
@@ -15,6 +16,7 @@ type books = {
     updatedAt: Date;
     name: string;
     location: string;
+    image: string;
     approved: boolean;
     disabled: boolean;
     userId: string;
@@ -67,6 +69,26 @@ const AdminDashboardBooksTable = ({ books }: { books: books[] }) => {
         size: 150,
         enableSorting: false,
         enableColumnActions: false,
+        Cell: ({ cell, row }) => (
+          <>
+            {/* https://unsplash.com/photos/a-woman-sitting-on-a-tennis-court-holding-a-can-PGuGUh1oOq4?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash */}
+            <Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+              <Image
+                src={row.original.owner.image}
+                alt="profile"
+                width={30}
+                height={30}
+                style={{
+                  borderRadius: "50%",
+                  width: "30px",
+                  height: "30px",
+                  objectFit: "cover",
+                }}
+              />
+              <Typography>{row.original.owner.name}</Typography>
+            </Box>
+          </>
+        ),
       },
       {
         accessorKey: "title",

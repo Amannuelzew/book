@@ -40,6 +40,46 @@ const run = async () => {
       role: "ADMIN",
     },
   });
+  const abebe = await prisma.user.upsert({
+    where: { email: "abebe@gmail.com" },
+    update: {},
+    create: {
+      email: "abebe@gmail.com",
+      password: bcrypt.hashSync("Aa!123456", salt),
+      location: "Addis Ababa",
+      image: "/abebe.jpg",
+      phoneNumber: "099221188",
+      role: "OWNER",
+    },
+  });
+  await prisma.owner.create({
+    data: {
+      userId: abebe.id,
+      name: "abebe",
+      location: abebe.location,
+      image: "/abebe.jpg",
+    },
+  });
+  const aster = await prisma.user.upsert({
+    where: { email: "aster@gmail.com" },
+    update: {},
+    create: {
+      email: "aster@gmail.com",
+      password: bcrypt.hashSync("Aa!123456", salt),
+      location: "Addis Ababa",
+      image: "/aster.jpg",
+      phoneNumber: "0900167891",
+      role: "OWNER",
+    },
+  });
+  await prisma.owner.create({
+    data: {
+      userId: aster.id,
+      name: "aster",
+      location: aster.location,
+      image: "/aster.jpg",
+    },
+  });
 };
 
 run()

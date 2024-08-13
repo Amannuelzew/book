@@ -20,6 +20,7 @@ type booksProps = {
     updatedAt: Date;
     name: string;
     location: string;
+    image: string;
     approved: boolean;
     disabled: boolean;
     userId: string;
