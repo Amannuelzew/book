@@ -93,6 +93,7 @@ const UploadForm = ({ categories }: { categories: categories }) => {
               label="quantity"
               helperText={state?.error?.quantity && state?.error?.quantity}
               error={state?.error?.quantity?.length !== undefined}
+              inputProps={{ min: 0 }}
             />
             <TextField
               id="price"
@@ -102,6 +103,7 @@ const UploadForm = ({ categories }: { categories: categories }) => {
               fullWidth
               helperText={state?.error?.price && state?.error?.price}
               error={state?.error?.price?.length !== undefined}
+              inputProps={{ min: 0 }}
             />
             <FormControl fullWidth>
               <InputLabel>Category</InputLabel>
