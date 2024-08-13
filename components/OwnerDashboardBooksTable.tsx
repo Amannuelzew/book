@@ -136,6 +136,7 @@ const OwnerDashboardBooksTable = ({
     newData.title = (event.target as any).title.value;
     newData.author = (event.target as any).author.value;
     newData.quantity = (event.target as any).quantity.value;
+    newData.available = (event.target as any).quantity.value > 0 ? true : false;
     newData.price = (event.target as any).price.value;
     newData.categoryId = (event.target as any).category.value;
     setData(data.map((item, i) => (i == current ? newData : item)));
