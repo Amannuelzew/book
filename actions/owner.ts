@@ -183,6 +183,7 @@ export const editBook = async (
         title: data.data.title,
         author: data.data.author,
         quantity: data.data.quantity,
+        available: data.data.quantity > 0 ? true : false,
         price: data.data.price,
         categoryId: data.data.category,
       },
