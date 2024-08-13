@@ -299,6 +299,7 @@ const OwnersBooksTable = ({
               onChange={(e) => setQantity(e.target.value)}
               helperText={state?.error?.quantity && state?.error?.quantity}
               error={state?.error?.quantity?.length !== undefined}
+              inputProps={{ min: 0 }}
             />
             <TextField
               id="price"
@@ -310,6 +311,7 @@ const OwnersBooksTable = ({
               onChange={(e) => setPrice(e.target.value)}
               helperText={state?.error?.price && state?.error?.price}
               error={state?.error?.price?.length !== undefined}
+              inputProps={{ min: 0 }}
             />
             <FormControl fullWidth>
               <InputLabel>Category</InputLabel>

@@ -86,13 +86,10 @@ const createBookSchema = z.object({
   author: z.string().min(1, { message: "This field has to be filled." }),
   quantity: z.coerce
     .number()
-    .int()
-    .positive()
-    .min(1, { message: "This field has to be filled." }),
+    .min(0, { message: "Number must be greater than or equal to zero." }),
   price: z.coerce
     .number()
-    .positive()
-    .min(1, { message: "This field has to be filled." }),
+    .min(0, { message: "Number must be greater than or equal to zero." }),
   category: z.string().min(1, {
     message: "This field has to be filled.",
   }),
@@ -107,9 +104,13 @@ const createBookSchema = z.object({
 const editBookSchema = z.object({
   title: z.string(),
   author: z.string(),
-  quantity: z.coerce.number().int().positive(),
+  quantity: z.coerce
+    .number()
+    .min(0, { message: "Number must be greater than or equal to zero." }),
 
-  price: z.coerce.number().positive(),
+  price: z.coerce
+    .number()
+    .min(0, { message: "Number must be greater than or equal to zero." }),
   category: z.string().min(1, {
     message: "This field has to be filled.",
   }),
