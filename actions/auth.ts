@@ -94,7 +94,7 @@ export const registerUser = async (
     cookies().set(COOKIE_NAME, token);
   } catch (e) {
     console.error(e);
-    return { message: "Database Error:Failed to Sign you up." };
+    return { message: "Failed to Sign you up." };
   }
 
   return ability.can("read", "/dashboard")
@@ -120,7 +120,7 @@ export const signinUser = async (
     cookies().set(COOKIE_NAME, token);
   } catch (e) {
     console.error(e);
-    return { message: "Database Error:Failed to Sign you in." };
+    return { message: "Failed to Sign you in." };
   }
 
   return ability.can("read", "/dashboard")
