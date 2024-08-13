@@ -86,10 +86,16 @@ const createBookSchema = z.object({
   author: z.string().min(1, { message: "This field has to be filled." }),
   quantity: z.coerce
     .number()
-    .min(0, { message: "Number must be greater than or equal to zero." }),
+    .min(0, { message: "Number must be greater than or equal to zero." })
+    .refine((value) => value !== null && value !== undefined, {
+      message: "quantity can't be empty",
+    }),
   price: z.coerce
     .number()
-    .min(0, { message: "Number must be greater than or equal to zero." }),
+    .min(0, { message: "Number must be greater than or equal to zero." })
+    .refine((value) => value !== null && value !== undefined, {
+      message: "price can't be empty",
+    }),
   category: z.string().min(1, {
     message: "This field has to be filled.",
   }),
@@ -106,11 +112,17 @@ const editBookSchema = z.object({
   author: z.string(),
   quantity: z.coerce
     .number()
-    .min(0, { message: "Number must be greater than or equal to zero." }),
+    .min(0, { message: "Number must be greater than or equal to zero." })
+    .refine((value) => value !== null && value !== undefined, {
+      message: "quantity can't be empty",
+    }),
 
   price: z.coerce
     .number()
-    .min(0, { message: "Number must be greater than or equal to zero." }),
+    .min(0, { message: "Number must be greater than or equal to zero." })
+    .refine((value) => value !== null && value !== undefined, {
+      message: "price can't be empty",
+    }),
   category: z.string().min(1, {
     message: "This field has to be filled.",
   }),
