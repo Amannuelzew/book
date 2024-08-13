@@ -9,10 +9,14 @@ A code editor or IDE
 
 ## Getting Started
 
-Clone the repository:https://github.com/Amannuelzew/book.git
-Navigate to the project directory:cd book
-Install dependencies
-run the development server:
+1.Clone the repository
+https://github.com/Amannuelzew/book.git
+
+2.Navigate to the project directory
+cd book
+
+3.Install dependencies
+4.Run the development server:
 
 ```bash
 npm run dev
