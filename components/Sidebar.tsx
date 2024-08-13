@@ -21,7 +21,6 @@ const links = [
   { path: "", name: "Other", icon: AddBoxOutlinedIcon },
   { path: "", name: "Other", icon: AddBoxOutlinedIcon },
   { path: "", name: "Notification", icon: NotificationsNoneOutlinedIcon },
-  { path: "", name: "Setting", icon: SettingsOutlinedIcon },
   { path: "", name: "Login as Owner", icon: AccountCircleOutlinedIcon },
 ];
 
@@ -201,6 +200,33 @@ const Sidebar = ({ user }: { user: User }) => {
           >
             <PersonOutlineOutlinedIcon sx={{ fontSize: 30 }} />
             <Typography>Owners</Typography>
+          </Box>
+        </Link>
+      </Can>
+
+      <Can I="read" a="/account" ability={ability}>
+        <Link
+          href={"/account"}
+          style={{ color: "white", textDecoration: "none" }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: 2,
+              gap: 2,
+              alignItems: "center",
+              backgroundColor: "/account" == path ? "#02AAFF" : "",
+              p: "/account" == path ? 1 : 0,
+              borderRadius: "/account" == path ? "10px" : "0px",
+              "&:hover": {
+                color: "/account" == path ? "" : "#02AAFF",
+                cursor: "pointer",
+              },
+            }}
+          >
+            <SettingsOutlinedIcon sx={{ fontSize: 30 }} />
+            <Typography>Account Setting</Typography>
           </Box>
         </Link>
       </Can>

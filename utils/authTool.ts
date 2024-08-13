@@ -79,10 +79,10 @@ export const signup = async ({
   return { user, token };
 };
 
-const hashPassword = (password: string) => {
+export const hashPassword = (password: string) => {
   const salt = bcrypt.genSaltSync();
   return bcrypt.hash(password, salt);
 };
-const comparePassword = (password: string, hashedPassword: string) => {
+export const comparePassword = (password: string, hashedPassword: string) => {
   return bcrypt.compare(password, hashedPassword);
 };

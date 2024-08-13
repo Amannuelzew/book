@@ -10,8 +10,6 @@ import {
 } from "@mui/material";
 import { Checkbox } from "@mui/material";
 import { Box } from "@mui/material";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { registerUser } from "@/actions/auth";

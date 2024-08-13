@@ -4,7 +4,7 @@ import { COOKIE_NAME } from "./utils/constants";
 
 export function middleware(request: NextRequest) {
   if (
-    ["/dashboard", "/books", "/owner", "/upload", "/user"].includes(
+    ["/dashboard", "/books", "/owner", "/upload", "/user", "/account"].includes(
       request.nextUrl.pathname
     )
   ) {
@@ -19,5 +19,13 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/books", "/owner", "/upload", "/user", "/"],
+  matcher: [
+    "/dashboard",
+    "/books",
+    "/owner",
+    "/upload",
+    "/user",
+    "/account",
+    "/",
+  ],
 };

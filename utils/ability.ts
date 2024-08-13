@@ -24,6 +24,7 @@ export function routedefineAbilityFor(user: User) {
     can("read", "/books");
     can("read", "/owners");
     can("read", "/dashboard");
+    can("read", "/account");
   }
 
   if (user.role === "OWNER") {
@@ -31,10 +32,12 @@ export function routedefineAbilityFor(user: User) {
     can("read", "/upload");
     can("read", "/dashboard");
     can("read", "/upload");
+    can("read", "/account");
   }
   if (user.role === "USER") {
     can("read", "/books");
     can("read", "/user/rented");
+    can("read", "/account");
   }
 
   return build();
