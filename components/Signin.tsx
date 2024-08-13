@@ -1,6 +1,12 @@
 "use client";
 import Submit from "./Submit";
-import { Checkbox } from "@mui/material";
+import {
+  Checkbox,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 import {
   FormControl,
   FormControlLabel,
@@ -13,11 +19,23 @@ import Link from "next/link";
 import { useFormState } from "react-dom";
 import { signinUser } from "@/actions/auth";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useState } from "react";
 const Signin = () => {
   const [state, action] = useFormState(signinUser, {
     error: null,
     message: null,
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
   return (
     <Box sx={{ paddingX: 10, paddingY: 15 }}>
       <Box
@@ -54,12 +72,27 @@ const Signin = () => {
             required
             error={state?.error?.password?.length !== undefined}
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             label="password"
             size="medium"
             fullWidth
             helperText={state?.error?.password && state?.error?.password}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <FormControl
             required
