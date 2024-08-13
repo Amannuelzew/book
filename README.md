@@ -13,11 +13,10 @@ A code editor or IDE
 https://github.com/Amannuelzew/book.git
 
 2.Navigate to the project directory
-cd book
 
 3.Install dependencies
 
-4.Run the development server:
+4.Run the development server
 
 ```bash
 npm run dev
